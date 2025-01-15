@@ -6,48 +6,48 @@
         </div>
         <div class="countries-grid">
             <div v-for="(country, index) in filteredCountries" :key="index" class="country-card">
-                {{ country }}
+                {{ country.name }}
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import { apiUrl } from '../../../../globalVariables';
+
 export default {
     data() {
         return {
             search: "",
-            countries: [
-                "Afghanistan",
-                "Albania",
-                "Algeria",
-                "Andorra",
-                "Angola",
-                "Anguilla",
-                "Argentina",
-                "Armenia",
-                "Australia",
-                "Austria",
-                "Azerbaijan",
-                "Bahamas",
-                "Bahrain",
-                "Bangladesh",
-                "Barbados",
-                "Belarus",
-                "Belgium",
-                "Belize",
-                "Benin",
-                "Bermuda",
-                "Bhutan",
-                "Bolivia",
-                "Bosnia and Herzegovina",
-            ],
+            countries: [],
         };
+    },
+    mounted() {
+        this.getHomeContent();
+    },
+
+    methods: {
+        async getHomeContent() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${apiUrl}home`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                this.countries = response.data.data.countries;
+                
+            } catch (error) {
+                console.error('Error fetching configurations:', error);
+            }
+            
+        },
     },
     computed: {
         filteredCountries() {
             return this.countries.filter((country) =>
-                country.toLowerCase().includes(this.search.toLowerCase())
+                country.name.toLowerCase().includes(this.search.toLowerCase())
             );
         },
     },

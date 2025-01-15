@@ -1,18 +1,18 @@
 <template>
     <Header></Header>
     <div>
-        <!-- Hero Section -->
         <Hero />
 
-        <!-- Search Section -->
         <div class="search-section">
             <div class="search-container">
                 <input type="text" placeholder="What do you want to study?..." class="search-input" />
                 <select class="search-dropdown">
-                    <option>Subject</option>
+                    <option>Select Country</option>
+                    <option v-for="(item, index) in countries" value="{{ item.name }}">{{ item.name }}</option>
                 </select>
                 <select class="search-dropdown">
-                    <option>Level</option>
+                    <option>Select Degree</option>
+                    <option v-for="(item, index) in degree" value="{{ item.name }}">{{ item.name }}</option>
                 </select>
             </div>
             <button class="search-button">Search</button>
@@ -24,7 +24,6 @@
         <CountSection></CountSection>
         <CourseSection></CourseSection>
         <LatestUpdate></LatestUpdate>
-     
 
     </div>
     <Footer></Footer>
@@ -40,8 +39,18 @@ import WorldClass from './WorldClass.vue';
 import LatestUpdate from './LatestUpdate.vue';
 import Header from '../../includes/HomeHeader.vue';
 import Footer from '../../includes/Footer.vue';
+import axios from 'axios';
+import { apiUrl } from '../../../../globalVariables';
 
 export default {
+    data() {
+        return {
+            home: {},
+            country: [],
+            degree: [],
+            countries: [],
+        }
+    },
     components: {
         Hero,
         Categories,
@@ -53,10 +62,48 @@ export default {
         CourseSection,
         LatestUpdate
     },
+
+    mounted() {
+        this.getHomeContent();
+    },
+
+    methods: {
+        async getHomeContent() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${apiUrl}home`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                this.home = response.data.data;
+                this.degree = response.data.data.degrees;
+                this.countries = response.data.data.countries;
+                console.log(response.data.data);
+                
+            } catch (error) {
+                console.error('Error fetching configurations:', error);
+            }
+            
+        },
+    },
 };
 </script>
 
 <style scoped>
+
+@media (max-width: 1247px) {
+    .search-container {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        width: 85% !important;
+    }
+    .search-input {
+        display: none;
+    }
+}
+
 .search-section {
     display: flex;
     justify-content: center;

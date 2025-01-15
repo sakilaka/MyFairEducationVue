@@ -1,46 +1,63 @@
 <template>
     <div class="count_Section">
         <div class="count-wrapper">
-            <div class="count-box" v-for="(item, index) in stats" :key="index">
-                <div class="icon">
-                    <img :src="item.icon" alt="Icon" />
-                </div>
-                <div class="count">{{ item.count }} +</div>
-                <div class="label">{{ item.label }}</div>
+            <div class="count-box">
+                <div class="count">{{ count.count_num_1 }} +</div>
+                <div class="label">{{ count.count_text_1 }}</div>
+            </div>
+            <div class="count-box">
+                <div class="count">{{ count.count_num_2 }} +</div>
+                <div class="label">{{ count.count_text_2 }}</div>
+            </div>
+            <div class="count-box">
+                <div class="count">{{ count.count_num_3 }} +</div>
+                <div class="label">{{ count.count_text_3 }}</div>
+            </div>
+            <div class="count-box">
+                <div class="count">{{ count.count_num_4 }} +</div>
+                <div class="label">{{ count.count_text_4 }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import logo from "../../../../assets/image/u_logo.png"
+import axios from "axios";
+import { apiUrl, appUrl } from "../../../../globalVariables";
 export default {
     data() {
         return {
-            logo,
-            stats: [
-                {
-                    icon: logo, 
-                    count: "1,669",
-                    label: "Students Enrolled",
-                },
-                {
-                    icon: logo,
-                    count: "139",
-                    label: "Class Completed",
-                },
-                {
-                    icon: logo,
-                    count: "11",
-                    label: "Skilled Instructors",
-                },
-                {
-                    icon: logo,
-                    count: "1,534",
-                    label: "Technical Courses",
-                },
-            ],
+            count: {},
         };
+    },
+
+    mounted() {
+        this.getHomeContent();
+    },
+
+    methods: {
+        async getHomeContent() {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get(`${apiUrl}home`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                this.count = response.data.data.home_content;
+                console.log(this.count);
+                
+
+                console.log(this.universities);
+            } catch (error) {
+                console.error("Error fetching home content:", error);
+            }
+        },
+
+        getImageUrl(item) {
+            return `${appUrl}upload/university/${item}`;
+        },
+        
     },
 };
 </script>

@@ -1,57 +1,74 @@
 <template>
     <div class="container">
-        <h2 class="text-center mb-4 fw-bold" style="margin-top: 70px;">
+        <h2 class="text-center mb-4 fw-bold" style="margin-top: 70px">
             Discover World class universities
         </h2>
         <div class="row justify-content-center card-row">
             <!-- Card Container -->
-            <div v-for="(item, index) in countries" :key="index" class="card_university">
+            <div v-for="(item, index) in universities" :key="index" class="card_university">
                 <div class="card_content">
-                    <img :src="item.image" class="card_image" alt="Country Image">
-                    <img :src="item.logo" class="logo_image" alt="">
-                    <p class="mt-2">{{ item.name }}</p>
-                    <h5 style="font-size: 17px;" class="mt-2 fw-bold">{{ item.university_name }}</h5>
-                    <p style="font-size: 14px;" class="mt-4">{{ item.location }}</p>
+                    <img :src="getImageUrl(item.banner_image)" class="card_image" alt="Country Image" />
+                    <img :src="getImageUrl(item.image)" class="logo_image" alt="" />
+                    <div class="card_content_text">
+                        <p class="mt-2">{{ item.course_count }} programs</p>
+                        <h5 style="font-size: 17px" class="mt-2 fw-bold">{{ item.name }}</h5>
+                        <p style="font-size: 14px" class="mt-4">{{ item.address }}</p>
+                    </div>
                 </div>
                 <div class="card_hover_content">
-                    <h4 class="fw-bold mb-5">{{ item.university_name || "Explore" }}</h4> 
-                    <div class="icon"><i class="fa-solid fa-arrow-right"></i></div> 
+                    <h4 class="fw-bold mb-5">{{ item.name || "Explore" }}</h4>
+                    <router-link :to="{path : `/university/${item.id}`}"><div class="icon"><i class="fa-solid fa-arrow-right"></i></div></router-link>
                 </div>
             </div>
-
         </div>
 
         <div class="text-center mt-5">
-            <button class="viewAllButton">View all universities <i class="fa-solid fa-arrow-right ms-2"></i> </button>
+            <button class="viewAllButton">
+                View all universities <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
         </div>
-        
     </div>
 </template>
 
-
 <script>
-import image from '../../../../assets/image/australia.jpg'
-import logo from '../../../../assets/image/u_logo.png'
+import axios from "axios";
+import { apiUrl, appUrl } from "../../../../globalVariables";
 
 export default {
     data() {
         return {
-            countries: [
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-                { name: "5 programs", image: image, logo: logo, university_name: "Wuhan Institute Of Technology", location: "kajir deuri 4000,chittagong" },
-
-            ],
+            universities: [],
+            program: 0,
         };
+    },
+    mounted() {
+        this.getHomeContent();
+    },
+
+    methods: {
+        async getHomeContent() {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get(`${apiUrl}home`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                this.universities = response.data.data.university_list;
+                this.program = response.data.data.course;
+
+                console.log(this.universities);
+            } catch (error) {
+                console.error("Error fetching home content:", error);
+            }
+        },
+
+        getImageUrl(item) {
+            return `${appUrl}upload/university/${item}`;
+        },
     },
 };
 </script>
-
 
 <style scoped>
 .viewAllButton {
@@ -63,9 +80,30 @@ export default {
     font-size: 18px;
     font-weight: bold;
 }
+.viewAllButton:hover{
+    background-color: #d58708;
+}
 
+.card_content_text {
+    height: 140px;
+}
 
-
+@media (max-width: 1247px) {
+    .card_university {
+        width: 50% !important;
+        margin: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: top;
+        height: 300px;
+        position: relative;
+        background-color: white;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
+        box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
+    }
+}
 
 .card_university {
     width: 18%;
@@ -79,7 +117,7 @@ export default {
     background-color: white;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
     /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
-    box-shadow: 0px 0px 40px rgba(29, 23, 77, .06);
+    box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
 }
 
 .card_university:hover {
@@ -133,11 +171,14 @@ export default {
     margin: auto;
     margin-top: -21px;
 }
+
 .logo_image {
     width: 50px;
     height: 50px;
     margin: auto;
     margin-top: -21px;
+    background-color: #ffffff;
+    padding: 3px;
 }
 
 .card_info {

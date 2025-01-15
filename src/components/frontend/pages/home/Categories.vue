@@ -5,13 +5,13 @@
             <span class="">Our Top <span class="highlight">Categories</span> </span>
         </h2>
         <div class="categories-grid">
-            <div v-for="(category, index) in categories" :key="index" class="category-card d-flex">
+            <div v-for="(category, index) in categories.slice(0, 9)" :key="index" class="category-card d-flex">
                 <div class="icon-container">
-                    <img :src="category.icon" alt="category icon" />
+                    <img class="" :src="icon" alt="category icon" />
                 </div>
                 <div class="ms-4">
-                    <h3 class="category-title">{{ category.title }}</h3>
-                    <p class="category-description">{{ category.description }}</p>
+                    <h3 class="category-title">{{ category.name }}</h3>
+                    <p class="category-description">{{ category.courses.length }} Programs.</p>
                 </div>
             </div>
         </div>
@@ -19,57 +19,39 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { apiUrl } from '../../../../globalVariables';
+import icon from '../../../../assets/image/mbadark.png'
+
 export default {
     data() {
         return {
-            categories: [
-                {
-                    icon: "path/to/development-icon.svg",
-                    title: "Development",
-                    description: "Take your journey with this course"
-                },
-                {
-                    icon: "path/to/business-icon.svg",
-                    title: "Business",
-                    description: "Take your journey with this course"
-                },
-                {
-                    icon: "path/to/data-science-icon.svg",
-                    title: "Data Science",
-                    description: "Discover the data science"
-                },
-                {
-                    icon: "path/to/marketing-icon.svg",
-                    title: "Marketing",
-                    description: "Take up your self in the next level"
-                },
-                {
-                    icon: "path/to/lifestyle-icon.svg",
-                    title: "Life Styles",
-                    description: "Improved your life style course"
-                },
-                {
-                    icon: "path/to/photography-icon.svg",
-                    title: "Photography",
-                    description: "Become the great photographer"
-                },
-                {
-                    icon: "path/to/art-design-icon.svg",
-                    title: "Art & Design",
-                    description: "Grow your design skills"
-                },
-                {
-                    icon: "path/to/health-fitness-icon.svg",
-                    title: "Health & Fitness",
-                    description: "Enjoy the health life with fitness"
-                },
-                {
-                    icon: "path/to/music-icon.svg",
-                    title: "Music",
-                    description: "Improve your self with music"
-                },
-            ],
+            categories: [],
+            icon,
+            totalCourse: 0,
         };
+    },
+    mounted() {
+        this.getHomeContent();
+    },
+
+    methods: {
+        async getHomeContent() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${apiUrl}home`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                this.categories = response.data.data.degrees;
+                console.log(this.categories);
+                
+            } catch (error) {
+                console.error('Error fetching configurations:', error);
+            }
+            
+        },
     },
 };
 </script>
@@ -121,6 +103,8 @@ export default {
     background: #fff;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
+    height: 105px;
+    border: 1px solid #824fa3;
 }
 
 .category-card:hover {
@@ -134,13 +118,14 @@ export default {
 }
 
 .category-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin: 10px 0;
     text-align: left;
+    height: 45px;
 }
 
 .category-description {
     font-size: 0.9rem;
+    text-align: left;
 }
 </style>

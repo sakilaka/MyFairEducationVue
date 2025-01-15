@@ -4,10 +4,9 @@
             Find Universities By Country
         </h1>
         <div class="row justify-content-center">
-            <!-- Card Container -->
-            <div v-for="(item, index) in countries" :key="index" class="card_country shadow-md">
+            <div v-for="(item, index) in countries.slice(0, 12)" :key="index" class="card_country shadow-md">
                 <div class="card_content">
-                    <img :src="item.image" class="card_image" alt="Country Image">
+                    <img :src="getImageUrl(item.image)" class="card_image" alt="Country Image">
                     <hr class="w-100 m-0">
                     <div class="card_info">
                         <p>{{ item.name }}</p>
@@ -16,31 +15,71 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="text-center mt-5">
+            <button class="viewAllButton">
+                View all Country <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+        </div>
     </div>
 </template>
 
 
 <script>
-import image from '../../../../assets/image/australia.jpg'
+import axios from "axios";
+import { apiUrl, appUrl } from "../../../../globalVariables";
 export default {
     data() {
         return {
-            countries: [
-                { name: "Australia", image: image },
-                { name: "Australia", image: image },
-                { name: "Australia", image: image },
-                { name: "Australia", image: image },
-                { name: "Australia", image: image },
-                { name: "Australia", image: image },
-              
-            ],
+            countries: [],
         };
+    },
+
+    mounted() {
+        this.getHomeContent();
+    },
+
+    methods: {
+        async getHomeContent() {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get(`${apiUrl}home`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                this.countries = response.data.data.cities; // Assign the fetched content to home_content
+                console.log(this.countries);
+            } catch (error) {
+                console.error("Error fetching home content:", error);
+            }
+        },
+
+        getImageUrl(item){
+            return `${appUrl}upload/cities/${item}`;
+        }
+
+        
     },
 };
 </script>
 
 
 <style scoped>
+
+.viewAllButton {
+    background-color: #f39c12;
+    border: none;
+    border-radius: 3px;
+    padding: 15px 35px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.viewAllButton:hover{
+    background-color: #d58708;
+}
 .container {
     margin-top: 20px;
 }

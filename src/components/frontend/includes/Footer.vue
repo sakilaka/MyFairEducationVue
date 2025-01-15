@@ -65,7 +65,7 @@
         </div>
         <div class="w-100 mt-5 border-top py-3">
             <div class="container">
-                <div class="row mt-1">
+                <div class="row mt-2">
                     <div class="col-md-6 col-lg-8">
 
                         <p class="copyright text-white">
@@ -91,7 +91,7 @@
 
 <script>
 
-import '../../../assets/css/style.css'
+import '../../../assets/css/style.css'   
 import '../../../assets/css/ionicons.min.css'
 import logo from '../../../assets/image/logo.png'
 import app from '../../../assets/image/app.png'
