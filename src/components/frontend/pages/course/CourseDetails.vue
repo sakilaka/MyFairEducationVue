@@ -5,11 +5,11 @@
         </div>
 
         <div class="info_container">
-            <h1 class="fw-bold">{{ program.name }}</h1>
+            <h1 class="fw-bold pName">{{ program.name }}</h1>
             <div class="mt-3 d-flex">
                 <img class="logo_" :src="getImageUrl(program?.university?.image)" alt="">
                 <div class="d-flex justify-content-between w-100">
-                    <div class="d-flex gap-2 ms-3">
+                    <div class="d-flex gap-2 ms-3 info">
                         <div>
                             <p>University</p>
                             <p class="fw-bold">{{ program?.university?.name }}</p>
@@ -28,13 +28,13 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: -30px;" class="">
+                    <div style="margin-top: -30px;" class="yearlyFee">
                         <div>
                             <p class="ms-3">Yearly fee : <span class="fee">${{ program.year_fee }}</span></p>
                             <!-- <p class="fee"> <span class="free">Free</span> ${{ program.year_fee }}</p> -->
                         </div>
                         <div class="ms-3 mt-2">
-                            <button class="btn_Apply">Apply now</button>
+                            <button @click="applyButton(program.id)" class="btn_Apply">Apply now</button>
                         </div>
                     </div>
                 </div>
@@ -71,23 +71,28 @@
                                         <div style="margin-top: 3.5rem;" class="">
                                             <div class="d-flex justify-content-between">
                                                 <p>Tution fee :</p>
-                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 : tab.content.year_fee }}</p>
+                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 :
+                                                    tab.content.year_fee }}</p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <p>Accommodation Fee :</p>
-                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 : tab.content.accommodation_fee }}</p>
+                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 :
+                                                    tab.content.accommodation_fee }}</p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <p>Insurance Fee :</p>
-                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 : tab.content.insurance_fee }}</p>
+                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 :
+                                                    tab.content.insurance_fee }}</p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <p>Visa Extension :</p>
-                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 : tab.content.visa_extension_fee }}</p>
+                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 :
+                                                    tab.content.visa_extension_fee }}</p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <p>Medical In China :</p>
-                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 : tab.content.medical_in_china_fee }}</p>
+                                                <p class="fw-bold">${{ tab.content.scholarship_id === 'free' ? 0 :
+                                                    tab.content.medical_in_china_fee }}</p>
                                             </div>
                                         </div>
 
@@ -207,6 +212,11 @@ export default {
     },
 
     methods: {
+        applyButton(id) {
+            window.location.href = `${appUrl}apply-cart/${id}`;
+            // this.$router.push(`/apply-admission/${id}`);
+        },
+
         async getCourseList() {
             try {
                 const token = localStorage.getItem('token');
@@ -264,6 +274,39 @@ export default {
         /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
         box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
         padding: 25px;
+    }
+
+    .info_container {
+        height: 530px !important;
+    }
+
+    .info {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .pName {
+        font-size: 25px;
+    }
+
+    .yearlyFee {
+        margin-top: 10px !important;
+    }
+
+    /* .nav-tabs .nav-link.active{
+        width: 200px !important;
+    } */
+    .sideSection {
+        height: 400px !important;
+        width: 100%;
+    }
+
+    .nav-tabs .nav-item {
+        width: 100%;
+    }
+    .btn_Apply{
+        padding: 4px 10px !important;
+        font-size: 13px;
     }
 }
 
@@ -369,10 +412,8 @@ export default {
 }
 
 .nav-tabs .nav-link.active {
-    /* border-color: #ddd #ddd #fff; */
     border: none;
     color: white;
-    font-weight: bold;
     margin: 10px 0px;
     background-color: #824fa3;
     width: 250px;

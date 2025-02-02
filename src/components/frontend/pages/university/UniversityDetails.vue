@@ -2,7 +2,8 @@
     <div class="">
         <div class="main">
             <div class="">
-                <img style="height: 500px;" class="w-100" :src="getImageUrl(university.banner_image)" alt="">
+                <img style="height: 500px;" class="w-100 bannerImage" :src="getImageUrl(university.banner_image)"
+                    alt="">
             </div>
             <div class="content">
                 <div class="logoUDiv">
@@ -18,8 +19,8 @@
     </div>
     <div>
         <div class="navList">
-            <div style="height: 55px;" class="d-flex gap-4 container pt-2">
-                <p v-for="(item, index) in navItems" :key="index" :class="{ 'active': activeTab === item }"
+            <div style="height: 55px;" class="d-flex gap-4 container pt-2 navItem">
+                <p v-for="(item, index) in navItems" :key="index" class="" :class="{ 'active': activeTab === item }"
                     @click="setActiveTab(item)">
                     {{ item }}
                 </p>
@@ -109,7 +110,7 @@
                         <p v-html="university.about"></p>
                     </div>
 
-                    <div v-if="activeTab === 'Fees structure'">
+                    <div v-if="activeTab === 'Fees'">
                         <div class="col-md-5 cardFee m-3">
                             <h6 class="text-center mt-2 fw-bold">Fees Structure</h6>
 
@@ -139,13 +140,14 @@
                                             university.fees_structure.accommodation_fees_2 }}</span>
                                     </p>
                                     <p style="display: flex;justify-content: space-between;">Insurance Fee: <span>¥{{
-                                            university.fees_structure.insurance_fee }}</span></p>
+                                        university.fees_structure.insurance_fee }}</span></p>
                                     <p style="display: flex;justify-content: space-between;">Visa Extension Fee:
                                         <span>¥{{ university.fees_structure.visa_extension_fee }}</span>
                                     </p>
                                     <p style="display: flex;justify-content: space-between;">Medical In China Fee:
                                         <span>¥{{ university.fees_structure.medical_in_china_fee
-                                            }}</span></p>
+                                            }}</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +159,7 @@
                         <p v-html="university.accommodation"></p>
                     </div>
 
-                    <div v-if="activeTab === 'Admission Process'">
+                    <div v-if="activeTab === 'Admission'">
                         <p v-if="university.admissions_process === null">No admissions process</p>
                         <p v-html="university.admissions_process"></p>
                     </div>
@@ -251,8 +253,6 @@
                         </div>
                     </div>
 
-
-
                 </div>
 
                 <div class="col-md-3">
@@ -269,6 +269,7 @@
 
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -292,9 +293,9 @@ export default {
             navItems: [
                 'About',
                 'Program',
-                'Fees structure',
+                'Fees',
                 'Accomadation',
-                'Admission Process',
+                'Admission',
                 'Scholarship',
                 'FAQ',
                 'Gallery'
@@ -408,6 +409,45 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 1100px) {
+    .navList {
+        width: 350px;
+        margin: auto;
+        overflow: auto;
+        height: 59px;
+    }
+
+    .navList p {
+        width: 190px !important;
+        font-size: 13px !important;
+    }
+
+    .navList p.active {
+        height: 31px !important;
+    }
+
+    .cardFee {
+        width: 337px !important;
+        margin: 0px auto !important;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .logoUDiv {
+        bottom: 163px !important;
+        left: 30px !important;
+    }
+
+    .textDiv {
+        bottom: 23px !important;
+        left: 32px !important;
+    }
+}
+
 .main {
     position: relative;
 }
@@ -464,6 +504,10 @@ export default {
     background: white;
     border-radius: 50%;
     z-index: 999;
+}
+
+.logoU {
+    width: 150px;
 }
 
 .textDiv {

@@ -12,76 +12,75 @@
                 <!-- Left Form Box -->
                 <div class="form-box">
                     <h3>Filters</h3>
-                    <!-- <form> -->
-                    <!-- <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" id="title" placeholder="Course title..." />
-                        </div> -->
                     <div class="form-group">
                         <label for="degree">Degree</label>
-                        <select id="degree">
-                            <option>Choose One</option>
-                            <option v-for="(degree, index) in degrees" value="{{ degree.name }}">{{ degree.name }}
+                        <select id="degree" v-model="selectedFilters.degree">
+                            <option value="">Choose One</option>
+                            <option v-for="(degree, index) in degrees" :key="index" :value="degree.id">
+                                {{ degree.name }}
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="language">Teaching Language</label>
-                        <select id="language">
-                            <option>Choose One</option>
-                            <option v-for="(language, index) in languages" value="{{ language.name }}">{{ language.name
-                                }}</option>
+                        <select id="language" v-model="selectedFilters.language">
+                            <option value="">Choose One</option>
+                            <option v-for="(language, index) in languages" :key="index" :value="language.id">
+                                {{ language.name }}
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="intake">Intake</label>
-                        <select id="intake">
-                            <option>Choose One</option>
-                            <option v-for="(section, index) in sections" value="{{ section.name }}">{{ section.name }}
+                        <select id="intake" v-model="selectedFilters.intake">
+                            <option value="">Choose One</option>
+                            <option v-for="(section, index) in sections" :key="index" :value="section.id">
+                                {{ section.name }}
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="subject">Major/Subject</label>
-                        <select id="subject">
-                            <option>Choose One</option>
-                            <option v-for="(major, index) in departments" value="{{ major.name }}">{{ major.name }}
+                        <select id="subject" v-model="selectedFilters.department">
+                            <option value="">Choose One</option>
+                            <option v-for="(major, index) in departments" :key="index" :value="major.id">
+                                {{ major.name }}
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="university">University</label>
-                        <select id="university">
-                            <option>Choose One</option>
-                            <option v-for="(university, index) in universities" value="{{ university.name }}">{{
-                                university.name }}</option>
+                        <select id="university" v-model="selectedFilters.university">
+                            <option value="">Choose One</option>
+                            <option v-for="(university, index) in universities" :key="index" :value="university.id">
+                                {{ university.name }}
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="province">province</label>
-                        <select id="province">
-                            <option>Choose One</option>
-                            <option v-for="(state, index) in states" value="{{ state.name }}">{{ state.name }}</option>
+                        <label for="province">Province</label>
+                        <select id="province" v-model="selectedFilters.state">
+                            <option value="">Choose One</option>
+                            <option v-for="(state, index) in states" :key="index" :value="state.id">
+                                {{ state.name }}
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="Cities">Cities</label>
-                        <select id="Cities">
-                            <option>Choose One</option>
-                            <option v-for="(city, index) in cities" value="{{ city.name }}">{{ city.name }}</option>
+                        <select id="Cities" v-model="selectedFilters.city">
+                            <option value="">Choose One</option>
+                            <option v-for="(city, index) in cities" :key="index" :value="city.id">
+                                {{ city.name }}
+                            </option>
                         </select>
                     </div>
-
-
-                    <!-- <button type="button" class="btn-find">Find</button>
-                        <button type="button" class="btn-reset">Reset filters</button> -->
-                    <!-- </form> -->
                 </div>
 
                 <!-- Right Card Section -->
                 <div class="cards-section">
-                    <div v-for="(card, index) in programs" :key="index" @click="navigateToCourse(card.id)"
-                        class="card_university">
+                    <div v-if="filteredPrograms.length > 0" v-for="(card, index) in filteredPrograms" :key="index"
+                        @click="navigateToCourse(card.id)" class="card_university">
                         <div class="card_header">
                             <img class="university_image" :src="getImageUrl(card.university?.banner_image)"
                                 alt="University logo" />
@@ -111,7 +110,7 @@
 
                             <hr class="my-1" />
 
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between intake">
                                 <div class="">
                                     <p>
                                         Tuition fee : ${{
@@ -128,7 +127,7 @@
 
                             <hr class="my-1" />
 
-                            <button type="submit" @click.stop="applyBtn" class="apply_btn">Apply Now <i
+                            <button type="submit" @click.stop="applyButton(card.id)" class="apply_btn">Apply Now <i
                                     class="fa-solid fa-arrow-right ms-1"></i>
                             </button>
 
@@ -137,7 +136,12 @@
                             </div>
                         </div>
                     </div>
+                    <div v-else>
+                        <h5 class="fw-bold text-center my-3">No Matched Programs.</h5>
+                    </div>
                 </div>
+
+                
 
             </div>
         </div>
@@ -146,6 +150,7 @@
 
 <script>
 import axios from "axios";
+import toastr from "toastr";
 import { apiUrl, appUrl } from "../../../../globalVariables";
 
 export default {
@@ -159,6 +164,16 @@ export default {
             sections: [],
             states: [],
             cities: [],
+            selectedFilters: {
+                degree: "",
+                language: "",
+                intake: "",
+                department: "",
+                university: "",
+                state: "",
+                city: "",
+            },
+            message: '',
         };
     },
 
@@ -178,14 +193,38 @@ export default {
                 };
             });
         },
+        
+        filteredPrograms() {
+            return this.programs.filter((program) => {
+                return (
+                    (!this.selectedFilters.degree || program.degree_id === this.selectedFilters.degree) &&
+                    (!this.selectedFilters.language || program.language_id === this.selectedFilters.language) &&
+                    (!this.selectedFilters.intake || program.section_id === this.selectedFilters.intake) &&
+                    (!this.selectedFilters.department || program.department_id === this.selectedFilters.department) &&
+                    (!this.selectedFilters.university || program.university_id === this.selectedFilters.university)
+                    // &&
+                    // (!this.selectedFilters.state || program.state_id === this.selectedFilters.state) &&
+                    // (!this.selectedFilters.city || program.city_id === this.selectedFilters.city)
+                );
+            });
+        },
     },
 
     mounted() {
+        const urlParams = new URLSearchParams(window.location.search);
+        this.message = urlParams.get('message');
         this.getCourseList();
     },
 
     methods: {
+        applyButton(id) {
+            window.location.href = `${appUrl}apply-cart/${id}`;
+            // this.$router.push(`/apply-admission/${id}`);
+        },
         async getCourseList() {
+            if(this.message !== null){
+                toastr.error(this.message);
+            }
             try {
                 const token = localStorage.getItem("token");
                 const response = await axios.get(`${apiUrl}course_list`, {
@@ -246,7 +285,7 @@ export default {
     margin-left: 20px;
     position: absolute;
     top: 0;
-    left: 0;
+    left: -20px;
     background-color: white;
     border-radius: 50%;
 }
@@ -297,16 +336,30 @@ export default {
         padding: 15px !important;
         background: #fff !important;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
-        width: 400px !important;
-        height: 555px !important;
+        width: 355px !important;
+        height: 702px !important;
         margin-left: 1px !important;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .university_image {
+        width: 354px;
+    }
+
+    .intake {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .cards-section {
+        gap: 25px !important;
+        margin: 1px auto;
     }
 }
 
 .card_university:hover {
-    box-shadow: 2px 2px 40px rgba(29, 23, 77, 0.06);
-    transform: scale(1.001);
-    transition: transform 3s ease-in;
+    box-shadow: 2px 2px 40px rgba(29, 23, 77, 0.1);
+    transform: scale(1.01);
 }
 
 .form-box {
@@ -386,6 +439,7 @@ select {
     width: 872px;
     margin-left: auto;
     height: 290px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .card_header {

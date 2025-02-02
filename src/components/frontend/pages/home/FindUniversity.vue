@@ -1,7 +1,8 @@
 <template>
-    <div class="container">
-        <h1 class="text-center mb-4 fw-bold" style="margin-top: 50px;">
-            Find Universities By Country
+    <div style="background-color: rgb(248, 243, 251);" class="py-5">
+        <div class="container">
+        <h1 class="text-center mb-4 fw-bold title" style="margin-top: 50px; font-size: 30px;">
+            Find Univer<span class="borderStyle">sities</span> By Country
         </h1>
         <div class="row justify-content-center">
             <div v-for="(item, index) in countries.slice(0, 12)" :key="index" class="card_country shadow-md">
@@ -17,11 +18,12 @@
         </div>
 
 
-        <div class="text-center mt-5">
+        <!-- <div class="text-center mt-5">
             <button class="viewAllButton">
                 View all Country <i class="fa-solid fa-arrow-right ms-2"></i>
             </button>
-        </div>
+        </div> -->
+    </div>
     </div>
 </template>
 
@@ -29,6 +31,7 @@
 <script>
 import axios from "axios";
 import { apiUrl, appUrl } from "../../../../globalVariables";
+
 export default {
     data() {
         return {
@@ -68,6 +71,29 @@ export default {
 
 <style scoped>
 
+@media (max-width: 1247px) {
+    .card_country{
+        width: 90% !important;
+    }
+    .card_image{
+        width: 100% !important;
+    }
+    .title{
+        font-size: 24px !important;
+        margin-top: 20px !important;
+        width: 250px;
+        margin: 0px auto;
+    }
+    .borderStyle{
+        border: none !important;
+    }
+}
+
+.borderStyle{
+    border-bottom: 5px solid #824fa3;
+    padding-bottom: 8px;
+}
+
 .viewAllButton {
     background-color: #f39c12;
     border: none;
@@ -86,13 +112,12 @@ export default {
 
 /* Styling for the card */
 .card_country {
-    width: 23%; /* Four cards per row */
+    width: 23%; 
     margin: 10px;
     border-radius: 5px;
     overflow: hidden;
     display: inline-block;
     vertical-align: top;
-    /* box-shadow:  0px 1px 1px rgb(153, 153, 153); */
     box-shadow: 0px 0px 40px rgba(29, 23, 77, .06);
 }
 

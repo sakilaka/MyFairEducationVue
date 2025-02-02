@@ -1,6 +1,6 @@
 <template>
     <footer class="footer-04" style="margin-top: 80px;">
-        <div class="container">
+        <div class="container pb-2">
             <div class="row">
                 <div class="col-md-6 col-lg-3 mb-md-0 mb-4">
                     <!-- <h2 class="footer-heading"><a href="#" class="logo">Colorlib</a></h2> -->
@@ -25,23 +25,25 @@
                 </div>
 
                 <div class="col-md-6 col-lg-3 mb-md-0 mb-4">
-                    <h2 class="footer-heading">Categories</h2>
+                    <h2 class="footer-heading">Quick links</h2>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="py-1 d-block">Buy &amp; Sell</a></li>
-                        <li><a href="#" class="py-1 d-block">Merchant</a></li>
-                        <li><a href="#" class="py-1 d-block">Giving back</a></li>
-                        <li><a href="#" class="py-1 d-block">Help &amp; Support</a></li>
+                        <li><router-link to="/blog" class="py-1 d-block">Blog</router-link></li>
+                        <li><router-link to="/about-us" class="py-1 d-block">About us</router-link></li>
+                        <li><router-link to="/contact" class="py-1 d-block">Contact</router-link></li>
                     </ul>
                 </div>
 
                 <div class="col-md-6 col-lg-3 mb-md-0 mb-4">
-                    <h2 class="footer-heading">Categories</h2>
-                    <ul class="list-unstyled">
+                    <h2 class="footer-heading">Office</h2>
+                    <!-- <ul class="list-unstyled">
                         <li><a href="#" class="py-1 d-block">Buy &amp; Sell</a></li>
                         <li><a href="#" class="py-1 d-block">Merchant</a></li>
                         <li><a href="#" class="py-1 d-block">Giving back</a></li>
                         <li><a href="#" class="py-1 d-block">Help &amp; Support</a></li>
-                    </ul>
+                    </ul> -->
+                    <h6 class="">For Bangladeshi Students</h6>
+                    <p class=""><span class="fw-bold">Dhaka Office:</span> Apartment 401, Third Floor, Road -5, House-14/16. Block-B. Mirpur-10.</p>
+                    <p><span class="fw-bold">Chattogram Office:</span> B.M Height (3rd Floor), 318, Sk. Mujib Road Agrabad C/A, Chattogram- 4100</p>
                 </div>
 
                 <div class="col-md-6 col-lg-3 mb-md-0 mb-4">
@@ -63,13 +65,12 @@
                 </div>
             </div>
         </div>
-        <div class="w-100 mt-5 border-top py-3">
+        <!-- <div class="w-100 mt-5 border-top py-3">
             <div class="container">
                 <div class="row mt-2">
                     <div class="col-md-6 col-lg-8">
 
                         <p class="copyright text-white">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;
                             All rights reserved <a
                                 href="https://colorlib.com" target="_blank">Mayfair.com</a>
@@ -84,7 +85,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </footer>
 
 </template>

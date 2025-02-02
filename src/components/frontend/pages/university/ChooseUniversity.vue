@@ -5,7 +5,7 @@
             <input v-model="search" type="text" class="filter-input form-control" placeholder="Filter Country" />
         </div>
         <div class="countries-grid">
-            <div v-for="(country, index) in filteredCountries" :key="index" class="country-card">
+            <div @click="navigateToCountry(country.id)" v-for="(country, index) in filteredCountries" :key="index" class="country-card">
                 {{ country.name }}
             </div>
         </div>
@@ -43,6 +43,9 @@ export default {
             }
             
         },
+        navigateToCountry(countryID){
+            this.$router.push(`/choose-country/${countryID}`)
+        }
     },
     computed: {
         filteredCountries() {
@@ -56,6 +59,14 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 1100px) {
+    .header h1{
+        font-size: 20px !important;
+    }
+    .filter-input{
+        width: 100%;
+    }
+}
 .header {
     text-align: center;
     margin-bottom: 60px;

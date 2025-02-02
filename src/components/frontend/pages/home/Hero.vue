@@ -8,7 +8,7 @@
                     :style="{ backgroundImage: `url(${imagee})`, backgroundSize: 'cover' }">
                     <a :href="bannerImageUrls[key] || '#'" target="_blank" class="stretched-link"
                         style="display: block; height: 100%;"></a>
-                    <div class="content m-auto">
+                    <div class="content mx-auto">
                         <p class="banner-header">Education WordPress theme</p>
                         <h1 class="banner-text">Build Your Dream with MayFair</h1>
                         <div class="mt-2">
@@ -106,16 +106,47 @@ export default {
 
 
 <style scoped>
+@media (max-width: 1247px) {
+
+    .banner-text {
+        font-size: 1.8rem !important;
+        font-weight: 700 !important;
+        text-align: left !important;
+        width: 300px;
+        margin-left: -47px;
+    }
+
+    .banner-header {
+        font-size: 1rem !important;
+        text-align: left !important;
+        display: none;
+    }
+
+    .apply_btn {
+        padding: 7px 65px !important;
+        border: none;
+        border-radius: 2px;
+        color: white;
+        font-size: 18px;
+        background-color: #824fa3;
+        margin-top: 5px;
+        margin-left: -95px;
+    }
+    .image-container{
+        height: 591px !important;
+    }
+}
+
 .banner-text {
     position: relative;
     z-index: 2;
-    font-size: 3rem; /* Adjusted font size for better scalability */
+    font-size: 3rem;
     color: #fff;
     margin-bottom: 20px;
-    font-weight: 800 !important;
-    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.8); /* Improved text shadow */
+    font-weight: 800;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.8);
     text-align: center;
-    line-height: 1.2; /* Better line height for multi-line text */
+    line-height: 1.2;
     text-transform: uppercase;
 }
 
@@ -124,10 +155,12 @@ export default {
     z-index: 2;
     color: #fff;
     text-align: center;
-    font-size: 1.5rem; /* Adjusted for readability */
+    font-size: 1.5rem;
+    /* Adjusted for readability */
     margin-bottom: 15px;
     text-transform: uppercase;
 }
+
 .content {
     position: relative;
     z-index: 10;
@@ -176,7 +209,7 @@ export default {
     background-color: #824fa3;
 }
 
-.apply_btn:hover{
+.apply_btn:hover {
     background-color: #613082;
 }
 

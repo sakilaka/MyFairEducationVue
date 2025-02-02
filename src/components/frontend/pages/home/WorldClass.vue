@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <h2 class="text-center mb-4 fw-bold" style="margin-top: 70px">
-            Discover World class universities
+        <h2 class="text-center mb-4 fw-bold title" style="margin-top: 70px; font-size: 30px;">
+            Discover Wor<span class="borderStyle">ld cla</span>ss universities
         </h2>
         <div class="row justify-content-center card-row">
             <!-- Card Container -->
@@ -17,15 +17,18 @@
                 </div>
                 <div class="card_hover_content">
                     <h4 class="fw-bold mb-5">{{ item.name || "Explore" }}</h4>
-                    <router-link :to="{path : `/university/${item.id}`}"><div class="icon"><i class="fa-solid fa-arrow-right"></i></div></router-link>
+                    <router-link :to="{ path: `/university/${item.id}` }">
+                        <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+                    </router-link>
                 </div>
             </div>
         </div>
 
         <div class="text-center mt-5">
-            <button class="viewAllButton">
-                View all universities <i class="fa-solid fa-arrow-right ms-2"></i>
-            </button>
+            <router-link to="/all-country"><button class="viewAllButton">
+                    View all universities <i class="fa-solid fa-arrow-right ms-2"></i>
+                </button>
+            </router-link>
         </div>
     </div>
 </template>
@@ -66,11 +69,20 @@ export default {
         getImageUrl(item) {
             return `${appUrl}upload/university/${item}`;
         },
+
+        singleUniversity(id) {
+            this.$router.push(`/university/${id}`)
+        }
     },
 };
 </script>
 
 <style scoped>
+.borderStyle {
+    border-bottom: 5px solid #824fa3;
+    padding-bottom: 8px;
+}
+
 .viewAllButton {
     background-color: #f39c12;
     border: none;
@@ -80,7 +92,8 @@ export default {
     font-size: 18px;
     font-weight: bold;
 }
-.viewAllButton:hover{
+
+.viewAllButton:hover {
     background-color: #d58708;
 }
 
@@ -90,7 +103,7 @@ export default {
 
 @media (max-width: 1247px) {
     .card_university {
-        width: 50% !important;
+        width: 300px !important;
         margin: 10px;
         border-radius: 5px;
         overflow: hidden;
@@ -102,6 +115,22 @@ export default {
         transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
         /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
         box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
+    }
+
+    .card_image {
+        width: 300px !important;
+        height: 132px !important;
+        margin: auto;
+        margin-top: -21px;
+    }
+    .title{
+        font-size: 24px !important;
+        margin-top: 20px !important;
+        width: 250px;
+        margin: 0px auto;
+    }
+    .borderStyle{
+        border: none !important;
     }
 }
 

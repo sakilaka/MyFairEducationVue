@@ -1,14 +1,13 @@
 <template>
     <div class="container" style="margin-top: 70px;">
-        <h2 class="fw-bold">Latest Updates</h2>
+        <h2 class="fw-bold">Latest <span class="borderStyle">Updates</span></h2>
         <div class="d-flex gap-3 contain" style="margin-top: 20px;">
 
             <div style="width: 100%;" class="blog row">
-                <hr>
-                <div v-for="(item, index) in latestUpdate" :key="index" class="background-container col-md-4">
+                <div @click="singleLatest(item)" v-for="(item, index) in latestUpdate.slice(0,3)" :key="index" class="background-container col-md-4">
                     <div class="content">
                         <div>
-                            <img class="blog_image" :src="item?.banner ? item.banner : getImageUrl(item.image)" alt="">
+                            <img class="blog_image" :src="item?.banner ? item.banner : getImageUrl(item)" alt="">
                         </div>
                         <div class="mt-2">
                             <p class="mb-4 badge bg-success">Featured</p>
@@ -17,11 +16,11 @@
                                 <p style="font-size: 20px;" class="mt-2 fw-bold">{{ formatDate(item.created_at).month }}
                                 </p>
                             </div> -->
-                            <h6 style="height: 85px;" class="fw-bold mt-1 ms-2">{{ item.title ? item.title : item.name }}</h6>
+                            <h6 style="height: 85px;" class="fw-bold mt-1 ms-2 title">{{ item.title ? item.title : item.name }}</h6>
                             <div class="d-flex gap-2 mt-3 ms-2">
-                                <img class="authorImage" :src="getImageUrl(item.author_image)" alt="">
+                                <img class="authorImage" :src="getImageUrl(item)" alt="">
                                 <div class="mt-1 ms-1">
-                                    <p>{{ item.author }}</p>
+                                    <p class="authorName">{{ item.author }}</p>
                                 </div>
                             </div>
                         </div>
@@ -72,6 +71,18 @@ export default {
     },
 
     methods: {
+        singleLatest(item){
+            if(item.slug){
+                this.$router.push(`/latest/${item.slug}`)
+            }
+            if(item.name){
+                this.$router.push(`/latest/${item.name}`)
+            }
+            if(item.title){
+                this.$router.push(`/latest/${item.title}`)
+            }
+        },
+
         async getHomeContent() {
             try {
                 const token = localStorage.getItem('token');
@@ -100,8 +111,17 @@ export default {
         subscribe() {
             console.log('Subscribed:', this.firstName, this.email);
         },
+
         getImageUrl(item) {
-            return `${appUrl}upload/blog/${item}`;
+            if (item.slug) {
+                return `${appUrl}upload/blog/${item.image}`;
+            }
+            if (item.name) {
+                return `${appUrl}upload/event/${item.image}`;
+            }
+            if (item.title) {
+                return `${item.banner}`;
+            }
         },
     }
 };
@@ -109,6 +129,11 @@ export default {
 
 
 <style scoped>
+.borderStyle{
+    border-bottom: 5px solid #824fa3;
+    padding-bottom: 8px;
+}
+
 @media (max-width: 1247px) {
     .background-container {
         /* background-image: url('your-image-url.jpg'); */
@@ -117,12 +142,32 @@ export default {
         position: relative;
         padding: 20px;
         background-color: #f2fafe;
-        width: 100%;
+        width: 350px !important;
+    }
+
+    .blog_image{
+        width: 315px !important;
     }
 
     .contain {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
+    }
+
+    .sub_form{
+        width: 350px !important;
+        padding-top: 80px !important;
+    }
+
+    .title{
+        font-size: 14px;
+        height: 55px !important;
+        width: 200px;
+    }
+    .authorName{
+        width: 200px;
+        margin-top: 10px;
+        margin-left: 10px;
     }
 }
 

@@ -1,13 +1,13 @@
 <template>
-    <Home></Home>
+    <Course></Course>
 </template>
 
 <script>
-import Home from "../../pages/course/Course.vue";
+import Course from "../../pages/course/Course.vue";
 
 export default {
     components: {
-        Home,
+        Course,
     },
 };
 </script>

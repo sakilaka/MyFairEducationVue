@@ -41,17 +41,30 @@
 
         <div class="card_container">
 
-            <div v-for="(blog, index) in blogs" class="blogcard">
-                <div class="card__header">
-                    <img :src="getImageUrl(blog.image)" alt="card__image" class="card__image" width="600">
+            <div @click="gotoSingleBlog(blog.id)" v-for="(blog, index) in blogs" class="blogcard">
+                <div class="image-container">
+                    <img :src="getImageUrl(blog.image)" alt="card__image" class="card__image" width="">
                 </div>
                 <div class="card__body">
-                    <span class="tag tag-blue">Technology</span>
+                    <!-- <span class="tag tag-blue">Technology</span> -->
                     <h5 class="fw-bold">{{ truncateText(blog.title, 40) }}</h5>
-                    <p>{{ blog.slug }}</p>
+                    <hr class="bg-black">
+                    <div class="d-flex">
+                        <div class="d-flex text-muted">
+                            <i class="fa-regular fa-calendar mt-1"></i>
+                            <p style="font-size: 13px; border-right: 2px solid gray; padding-right: 10px; height: 23px"
+                                class="ms-2 fw-bold">{{ formatDate(blog.created_at) }}</p>
+                        </div>
+                        <div style="margin-left: 10px;" class="d-flex text-muted">
+                            <i class="fa-regular fa-user mt-1"></i>
+                            <p style="font-size: 13px; height: 23px" class="ms-2 fw-bold">by {{
+                                truncateText(blog.author,10) }}</p>
+                        </div>
+                    </div>
+                    <p class="text-muted">{{ blog.slug }}</p>
                 </div>
                 <div class="card__footer">
-                    <div class="user">
+                    <!-- <div class="user">
                         <img :src="getImageUrl(blog.author_image)" alt="user__image" class="user__image">
                         <div class="user__info ms-2">
                             <h6>{{ blog.author }}</h6>
@@ -64,6 +77,10 @@
                                 {{ blog.views }}
                             </p>
                         </div>
+                    </div> -->
+                    <div style="cursor: pointer;" class="d-flex">
+                        <i style="font-size: 18px;" class="fa-solid fa-circle-right mt-1"></i>
+                        <p class="fw-bold ms-3">Read More</p>
                     </div>
                 </div>
             </div>
@@ -121,25 +138,51 @@ export default {
         },
 
         formatDate(datetime) {
-            if (!datetime) return { date: '', month: '' };
+            if (!datetime) return '';
 
-            const options = { day: '2-digit', month: 'short' };
-            const formatted = new Date(datetime).toLocaleDateString('en-US', options);
-
-            const [month, date] = formatted.split(' ');
-            return { date, month };
+            const options = { year: 'numeric', month: 'long', day: '2-digit' };
+            return new Date(datetime).toLocaleDateString('en-US', options);
         },
+
 
         truncateText(text, maxLength) {
             if (!text) return "";
             return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
         },
+
+        gotoSingleBlog(blogId) {
+            this.$router.push({ path: `/blog/${blogId}` });
+        }
     },
 }
 </script>
 
 
 <style scoped>
+@media (max-width: 1100px) {
+    .search_container {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .form-group {
+        width: 100% !important;
+    }
+
+    .image-container {
+        width: 263px !important;
+        height: 290px;
+        overflow: hidden;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .card__body p {
+        height: 40px !important;
+    }
+}
+
+
 .containerBlog {
     width: 80%;
     margin: auto;
@@ -203,19 +246,38 @@ export default {
 
 
 
-img {
-    max-width: 100%;
-    display: block;
-    object-fit: cover;
+.image-container {
+    width: 330px;
+    height: 290px;
+    overflow: hidden;
+    border-radius: 10px;
+    display: inline-block;
 }
 
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
 .blogcard {
-    display: flex;
-    flex-direction: column;
+
     width: 375px;
     overflow: hidden;
-    box-shadow: 0px 0px 40px rgba(29, 23, 77, .06);
-    border-radius: 1em;
+    margin-bottom: 30px;
+    border: 1px solid #dae5ec;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    padding: 19px;
+    padding-bottom: 0px !important;
 }
 
 
@@ -227,8 +289,8 @@ img {
     gap: .5rem;
 }
 
-.card__body p{
-    height: 37px;
+.card__body p {
+    height: 22px;
 }
 
 
