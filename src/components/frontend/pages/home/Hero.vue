@@ -12,7 +12,7 @@
                         <p class="banner-header">Education WordPress theme</p>
                         <h1 class="banner-text">Build Your Dream with MayFair</h1>
                         <div class="mt-2">
-                            <button class="apply_btn">Apply Now</button>
+                            <router-link to="/course"><button class="apply_btn">Apply Now</button></router-link>
                         </div>
                     </div>
                 </div>
@@ -45,8 +45,15 @@ export default {
     data() {
         return {
             imagee,
-            home_content: {},
+            // home_content: {},
         };
+    },
+
+    props: {
+        home_content: {
+            type: Object,
+            required: true,
+        },
     },
 
     computed: {
@@ -74,7 +81,7 @@ export default {
     },
 
     mounted() {
-        this.getHomeContent(); // Fetch home content when the component is mounted
+        // this.getHomeContent(); 
     },
 
     methods: {
@@ -86,20 +93,20 @@ export default {
         },
 
         // Method to fetch home content data from the API
-        async getHomeContent() {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(`${apiUrl}home`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                this.home_content = response.data.data.home_content; // Assign the fetched content to home_content
-                console.log(this.home_content);
-            } catch (error) {
-                console.error("Error fetching home content:", error);
-            }
-        },
+        // async getHomeContent() {
+        //     try {
+        //         const token = localStorage.getItem("token");
+        //         const response = await axios.get(`${apiUrl}home`, {
+        //             headers: {
+        //                 Authorization: `Bearer ${token}`,
+        //             },
+        //         });
+        //         this.home_content = response.data.data.home_content; // Assign the fetched content to home_content
+        //         console.log(this.home_content);
+        //     } catch (error) {
+        //         console.error("Error fetching home content:", error);
+        //     }
+        // },
     },
 };
 </script>
@@ -115,11 +122,12 @@ export default {
         width: 300px;
         margin-left: -47px;
     }
-
+    
     .banner-header {
+        margin-left: -47px;
         font-size: 1rem !important;
         text-align: left !important;
-        display: none;
+        /* display: none; */
     }
 
     .apply_btn {

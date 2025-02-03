@@ -1,10 +1,10 @@
 <template>
-    <div style="margin: 110px;">
+    <div style="margin-top: 110px;">
         <div class="header">
             <h1 class="fw-bold mb-4">Find Universities by Country</h1>
             <input v-model="search" type="text" class="filter-input form-control" placeholder="Filter Country" />
         </div>
-        <div class="countries-grid">
+        <div class="countries-grid container">
             <div @click="navigateToCountry(country.id)" v-for="(country, index) in filteredCountries" :key="index" class="country-card">
                 {{ country.name }}
             </div>
@@ -64,7 +64,10 @@ export default {
         font-size: 20px !important;
     }
     .filter-input{
-        width: 100%;
+        width: 300px !important;
+    }
+    .country-card{
+        width: 300px !important;
     }
 }
 .header {

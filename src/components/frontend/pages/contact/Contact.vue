@@ -3,7 +3,9 @@
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
-                    <p class="para">HomePage</p>
+                    <router-link to="/">
+                        <p class="para">Home</p>
+                    </router-link>
                     <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Contact</h2>
                 </div>
             </div>
@@ -114,13 +116,15 @@ export default {
 
 
 <style scoped>
-.form-control{
+.form-control {
     height: 45px !important;
     font-size: 15px;
 }
-.form-select-lg{
+
+.form-select-lg {
     font-size: 15px;
 }
+
 .btn-dark-cerulean {
     background-color: #824fa3;
     color: white;

@@ -4,7 +4,7 @@
       <h2 class="fw-bold heading">Popular <span class="borderStyle">Courses</span></h2>
 
 
-      <div class="mt-5 d-flex tabSection">
+      <div class="mt-3 d-flex tabSection">
         <div class="filter-tab" :class="{ active: activeTab === 'all' }" @click="activeTab = 'all'">
           <p class="searchTitle">All programs</p>
         </div>
@@ -31,7 +31,7 @@
 
     <div class="row gx-3 gy-4 mt-2 mx-auto">
       <div v-if="filteredCourses.length > 0" v-for="(item, index) in filteredCourses" :key="index" style=""
-        class="col-12 col-md-6 col-lg-3 col-auto mt-sm-3 mt-md-4">
+        class="col-12 col-md-6 col-lg-4 col-auto mt-sm-3 mt-md-4">
         <div @click="handleClick(item.id)" class="single-course">
           <div>
             <img class="card_img" :src="getImageUrl(item?.university?.banner_image)" alt="" />
@@ -115,9 +115,17 @@ export default {
   data() {
     return {
       university,
-      courses: [],
+      // courses: [],
       activeTab: 'all',
     };
+  },
+
+  props: {
+    courses: {
+      type: Array,
+      required: true,
+    },
+
   },
   computed: {
     filteredCourses() {
@@ -137,7 +145,7 @@ export default {
     },
   },
   mounted() {
-    this.getHomeContent();
+    // this.getHomeContent();
   },
 
   methods: {
@@ -152,20 +160,20 @@ export default {
       // this.$router.push(`/apply-admission/${id}`);
     },
 
-    async getHomeContent() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${apiUrl}home`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        this.courses = response.data.data.courses_all;
-        console.log(this.courses);
-      } catch (error) {
-        console.error("Error fetching home content:", error);
-      }
-    },
+    // async getHomeContent() {
+    //   try {
+    //     const token = localStorage.getItem("token");
+    //     const response = await axios.get(`${apiUrl}home`, {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     });
+    //     this.courses = response.data.data.courses_all;
+    //     console.log(this.courses);
+    //   } catch (error) {
+    //     console.error("Error fetching home content:", error);
+    //   }
+    // },
 
     getImageUrl(item) {
       return `${appUrl}upload/university/${item}`;
@@ -182,10 +190,11 @@ export default {
 
 <style scoped>
 @media (max-width: 1247px) {
-  .searchTitle{
+  .searchTitle {
     width: 106px;
     height: 20px;
   }
+
   .display_small {
     display: flex;
     flex-direction: column;
@@ -267,7 +276,8 @@ export default {
 .single-course {
   position: relative;
   border: 0.5px solid rgb(245, 242, 242);
-  width: 322px;
+  width: 340px;
+  box-shadow: 0px 0px 30px rgba(29, 23, 77, 0.06);
 }
 
 .single-course:hover {

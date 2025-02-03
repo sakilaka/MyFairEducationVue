@@ -1,92 +1,85 @@
 <template>
     <div style="margin-top: 110px;">
-        <div class="">
-            <div class="inner_section">
-                <div class="containerBlog">
-                    <p class="para">HomePage</p>
-                    <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Blog</h2>
-                </div>
+        <div class="inner_section">
+            <div class="containerBlog">
+                <router-link to="/">
+                    <p class="para">Home</p>
+                </router-link>
+                <h2 class="fw-bold" style="color: #012169; margin-top: -10px">Blog</h2>
             </div>
         </div>
 
+        <!-- Search & Filters -->
         <div class="search_container">
-
+            <!-- Search Input -->
             <div class="form-group input-group">
-                <input class="form-control" type="text" name="search" placeholder="Search" />
+                <input v-model="searchQuery" class="form-control" type="text" placeholder="Search by title or author" />
                 <i class="fas fa-search search-icon"></i>
             </div>
 
+            <!-- Category Filter -->
             <div class="form-group input-group">
-                <select class="form-select" name="" id="">
+                <select v-model="selectedCategory" class="form-select">
                     <option value="">Select category</option>
-                    <option v-for="(category, index) in categories" value="{{ category.name }}">{{ category.name }}
+                    <option v-for="category in categories" :key="category.id" :value="category.id">
+                        {{ category.name }}
                     </option>
                 </select>
             </div>
-            <div class="form-group input-group">
-                <select class="form-select" name="" id="">
-                    <option value="">Select topics</option>
-                    <option v-for="(topic, index) in topics" value="{{ topic.name }}">{{ topic.name }}</option>
 
+            <!-- Topic Filter -->
+            <div class="form-group input-group">
+                <select v-model="selectedTopic" class="form-select">
+                    <option value="">Select topic</option>
+                    <option v-for="topic in topics" :key="topic.id" :value="topic.id">
+                        {{ topic.name }}
+                    </option>
                 </select>
             </div>
+
+            <!-- Sort by Latest -->
             <div class="form-group input-group">
-                <select class="form-select" name="" id="">
-                    <option value="">Select</option>
+                <select v-model="sortOrder" class="form-select">
+                    <option value="">Sort By</option>
                     <option value="latest">Latest</option>
                 </select>
             </div>
-
         </div>
 
+        <!-- Blog Cards -->
         <div class="card_container">
-
-            <div @click="gotoSingleBlog(blog.id)" v-for="(blog, index) in blogs" class="blogcard">
+            <div v-for="blog in filteredBlogs" :key="blog.id" class="blogcard" @click="gotoSingleBlog(blog.id)">
                 <div class="image-container">
-                    <img :src="getImageUrl(blog.image)" alt="card__image" class="card__image" width="">
+                    <img :src="getImageUrl(blog.image)" alt="card__image" class="card__image">
                 </div>
                 <div class="card__body">
-                    <!-- <span class="tag tag-blue">Technology</span> -->
                     <h5 class="fw-bold">{{ truncateText(blog.title, 40) }}</h5>
                     <hr class="bg-black">
-                    <div class="d-flex">
-                        <div class="d-flex text-muted">
+                    <div class="d-flex text-muted">
+                        <div class="d-flex">
                             <i class="fa-regular fa-calendar mt-1"></i>
-                            <p style="font-size: 13px; border-right: 2px solid gray; padding-right: 10px; height: 23px"
-                                class="ms-2 fw-bold">{{ formatDate(blog.created_at) }}</p>
+                            <p class="ms-2 fw-bold"
+                                style="font-size: 13px; border-right: 2px solid gray; padding-right: 10px; height: 23px">
+                                {{ formatDate(blog.created_at) }}
+                            </p>
                         </div>
-                        <div style="margin-left: 10px;" class="d-flex text-muted">
+                        <div class="d-flex" style="margin-left: 10px;">
                             <i class="fa-regular fa-user mt-1"></i>
-                            <p style="font-size: 13px; height: 23px" class="ms-2 fw-bold">by {{
-                                truncateText(blog.author,10) }}</p>
+                            <p class="ms-2 fw-bold" style="font-size: 13px; height: 23px">
+                                by {{ truncateText(blog.author, 10) }}
+                            </p>
                         </div>
                     </div>
                     <p class="text-muted">{{ blog.slug }}</p>
                 </div>
                 <div class="card__footer">
-                    <!-- <div class="user">
-                        <img :src="getImageUrl(blog.author_image)" alt="user__image" class="user__image">
-                        <div class="user__info ms-2">
-                            <h6>{{ blog.author }}</h6>
-                            <small>{{ formatDate(blog.created_at).date }} {{ formatDate(blog.created_at).month
-                                }}</small>
-                        </div>
-                        <div class="ms-5 mt-3">
-                            <p class="text-muted">
-                                <i class="fas fa-eye"></i>&nbsp;
-                                {{ blog.views }}
-                            </p>
-                        </div>
-                    </div> -->
-                    <div style="cursor: pointer;" class="d-flex">
-                        <i style="font-size: 18px;" class="fa-solid fa-circle-right mt-1"></i>
+                    <div class="d-flex" style="cursor: pointer;">
+                        <i class="fa-solid fa-circle-right mt-1" style="font-size: 18px;"></i>
                         <p class="fw-bold ms-3">Read More</p>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 </template>
 
@@ -100,6 +93,38 @@ export default {
             blogs: [],
             categories: [],
             topics: [],
+            searchQuery: "",
+            selectedCategory: "",
+            selectedTopic: "",
+            sortOrder: "",
+        }
+    },
+
+    computed: {
+        filteredBlogs() {
+            let filtered = [...this.blogs];
+
+            if (this.searchQuery) {
+                const query = this.searchQuery.toLowerCase();
+                filtered = filtered.filter(blog =>
+                    blog.title.toLowerCase().includes(query) ||
+                    blog.author.toLowerCase().includes(query)
+                );
+            }
+
+            if (this.selectedCategory) {
+                filtered = filtered.filter(blog => blog.category_id === this.selectedCategory);
+            }
+
+            if (this.selectedTopic) {
+                filtered = filtered.filter(blog => blog.topic_id === this.selectedTopic);
+            }
+
+            if (this.sortOrder === "latest") {
+                filtered.reverse();
+            }
+
+            return filtered;
         }
     },
 
@@ -170,8 +195,8 @@ export default {
     }
 
     .image-container {
-        width: 263px !important;
-        height: 290px;
+        width: 288px !important;
+        height: 200px !important;
         overflow: hidden;
         border-radius: 10px;
         display: inline-block;
@@ -242,6 +267,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 20px 40px;
+    cursor: pointer;
 }
 
 

@@ -90,11 +90,6 @@
                                 <img class="brand_logo" :src="logo" alt="Brand Logo" />
                             </a>
                         </swiper-slide>
-                        <!-- Add navigation buttons -->
-
-                        <!-- <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div> -->
-                        
                     </swiper>
                 </div>
             </div>
@@ -104,7 +99,7 @@
             <div class="become_ins">
                 <div class="container">
                     <div class="row g-5">
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-6 col-md-6">
                             <div class="text-center">
                                 <svg width="102" height="106" viewBox="0 0 102 106" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +132,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-6 col-md-6">
                             <div class="text-center">
                                 <svg width="102" height="106" viewBox="0 0 102 106" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +189,7 @@
                                     rtyrt</p>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-6 col-md-6">
                             <div class="text-center">
                                 <svg width="102" height="106" viewBox="0 0 102 106" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -233,7 +228,7 @@
                                     tryrt</p>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-6 col-md-6">
                             <div class="text-center">
                                 <svg width="102" height="106" viewBox="0 0 102 106" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -305,7 +300,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-6 col-md-6">
                             <div class="text-center">
                                 <svg width="102" height="106" viewBox="0 0 102 106" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -356,7 +351,7 @@
                                     tryrt</p>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-6 col-md-6">
                             <div class="text-center">
                                 <svg width="102" height="106" viewBox="0 0 102 106" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -502,6 +497,12 @@ export default {
     .banner2 {
         padding: 70px 0;
     }
+    .brand2-carousel{
+        margin-left: 1px !important;
+    }
+    .brand_logo{
+        width: 110%;
+    }
 }
 
 .main_title {
@@ -530,8 +531,11 @@ export default {
 
 @media(max-width: 991px) {
     .overall_exp .main_title {
-        font-size: 36px;
+        font-size: 28px;
         line-height: 44px;
+    }
+    .overall_exp .desc {
+        text-align: left;
     }
 
     .overall_exp,

@@ -124,7 +124,7 @@
                 <p class="text-center text-uppercase fw-bold" style="color: #824fa3; font-size: 14px;">Testimonial</p>
                 <h4 class="fw-bold text-center">What Our Customer <span style="color: #824fa3;">says!</span></h4>
                 <!-- Swiper Slider -->
-                <swiper :slides-per-view="1" space-between="20" loop="true" autoplay="true" navigation pagination
+                <swiper :slides-per-view="1" space-between="20" loop="true" autoplay="true" pagination
                     class="mySwiper">
                     <swiper-slide v-for="(testimonial, index) in testimonials" :key="index">
                         <div class="testimonial_sec row">
@@ -133,7 +133,7 @@
                             </div>
                             <div class="col-md-6 col-12 content">
                                 <!-- <p v-html="truncatedComment"></p> -->
-                                <p v-html="truncateText(testimonial.comment, 400)"></p>
+                                <p v-html="truncateText(testimonial.comment, 300)"></p>
                                 <div class="mt-4 d-flex">
                                     <p class="fw-bold">{{ testimonial.name }}</p>
                                     <p class="ms-3 text-muted">{{ testimonial.designation }}</p>
@@ -380,12 +380,22 @@ export default {
     }
 
     .description {
-        width: 330px !important;
-        height: 185px !important;
+        width: 300px !important;
+        height: 190px !important;
     }
 
     .testimonial-section {
-        height: 1000px !important;
+        height: 900px !important;
+    }
+    .tabs span{
+        font-size: 15px !important;
+    }
+    .service-card{
+        width: 320px !important;
+    }
+    .profile{
+        width: 100% !important;
+        height: 300px !important;
     }
 }
 

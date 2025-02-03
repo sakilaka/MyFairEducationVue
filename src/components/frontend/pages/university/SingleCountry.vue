@@ -4,8 +4,10 @@
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
-                    <p class="para">HomePage</p>
-                    <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Country</h2>
+                    <router-link to="/">
+                        <p class="para">Home</p>
+                    </router-link>
+                    <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Universities</h2>
                 </div>
             </div>
         </div>
@@ -42,7 +44,8 @@
 
             <div class="col-md-9">
                 <p class="my-2 ms-2">{{ filteredUniversities.length }} total university found.</p>
-                <div @click="singleUniversity(item.id)" v-for="(item, index) in filteredUniversities" :key="index" class="card_university">
+                <div @click="singleUniversity(item.id)" v-for="(item, index) in filteredUniversities" :key="index"
+                    class="card_university">
                     <div class="text-center">
                         <img :src="getImageUrl(item.image)" class="card_image" alt="Country Image" />
                     </div>
@@ -95,7 +98,7 @@ export default {
     },
 
     methods: {
-        singleUniversity(id){
+        singleUniversity(id) {
             this.$router.push(`/university/${id}`)
         },
         async getUniversity() {
@@ -143,6 +146,7 @@ export default {
     color: #824fa3;
     font-weight: bold;
 }
+
 .form-control {
     height: 40px !important;
     font-size: 15px !important;
@@ -156,7 +160,7 @@ export default {
 
 @media (max-width: 1247px) {
     .card_university {
-        width: 50% !important;
+        width: 100% !important;
         margin: 10px;
         border-radius: 5px;
         overflow: hidden;

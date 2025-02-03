@@ -25,7 +25,6 @@ import Applicants from '../components/frontend/templates/applicants/Applicants.v
 import BlogDetails from '../components/frontend/templates/blog/BlogDetails.vue';
 import EventDetails from '../components/frontend/templates/event/EventDetails.vue';
 import CourseDetails from '../components/frontend/templates/course/CourseDetails.vue';
-import ApplyForm from '../components/frontend/templates/course/ApplyForm.vue';
 import ChooseUniversity from '../components/frontend/templates/university/ChooseUniversity.vue';
 import UniversityDetails from '../components/frontend/templates/university/UniversityDetails.vue';
 import SingleCountry from '../components/frontend/templates/university/SingleCountry.vue';
@@ -34,15 +33,16 @@ import AllCountryUniversity from '../components/frontend/templates/university/Al
 
 
 const routes = [
-    {
-        path: '/',
-        component: Home,
-    },
+    
    
     {
         path: '/frontend',
         component: FrontendLayout,
         children: [
+            {
+                path: '/',
+                component: Home,
+            },
             {
                 path: '/login',
                 component: Login,
@@ -108,10 +108,7 @@ const routes = [
                 path: '/course/:id',
                 component: CourseDetails,
             },
-            {
-                path: '/apply-admission/:id',
-                component: ApplyForm,
-            },
+      
             {
                 path: '/choose-country',
                 component: ChooseUniversity,

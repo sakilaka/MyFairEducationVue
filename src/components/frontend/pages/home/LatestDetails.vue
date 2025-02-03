@@ -3,14 +3,16 @@
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
-                    <p class="para">HomePage</p>
+                    <router-link to="/">
+                        <p class="para">Home</p>
+                    </router-link>
                     <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Latest Update</h2>
                 </div>
             </div>
         </div>
 
 
-        <div style="margin-top: 50px !important;" class="container m-auto d-flex gap-5">
+        <div style="margin-top: 50px !important;" class="container m-auto d-flex gap-5 blogDetails">
             <div class="blog-content">
                 <h2 class="fw-bold">{{ blog.title }}</h2>
                 <div class="d-flex mt-3">
@@ -56,6 +58,7 @@
 
             </div>
         </div>
+
 
     </div>
 </template>
@@ -182,6 +185,43 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 1100px) {
+    .blogDetails {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .blog-content {
+        width: 100% !important;
+    }
+
+    .first_side {
+        width: 350px !important;
+    }
+
+    .image-container {
+        width: 263px !important;
+        height: 290px;
+        overflow: hidden;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .subtitle {
+        width: 300px;
+        font-size: 12px;
+        margin: 0px auto;
+    }
+
+    .mainTitle {
+        font-size: 20px !important;
+    }
+
+    .recentBlog {
+        padding: 0px !important;
+    }
+}
+
 .sideBlogImage {
     width: 160px;
 }
@@ -203,7 +243,6 @@ export default {
 }
 
 .blogcard {
-
     width: 375px;
     overflow: hidden;
     margin-bottom: 30px;
@@ -377,4 +416,4 @@ img {
     height: 37px !important;
     font-size: 15px !important;
 }
-</style>F
+</style>

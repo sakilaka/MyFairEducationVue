@@ -1,8 +1,8 @@
 <template>
     <div class="appointment-container" style="margin-top: 110px;">
 
-        <div class="appointment-content">
-            <div class="appointment-details">
+        <div class="">
+            <!-- <div class="appointment-details">
                 <div class="appointment-header">
                     <img :src="logo" alt="Mayfair Logo" class="logo" />
                 </div>
@@ -38,7 +38,9 @@
                     <span>🌍</span>
                     <span>Asia/Dhaka ({{ currentTime }})</span>
                 </div>
-            </div>
+            </div> -->
+            
+            <h1 class="text-center my-5 fw-bold">This page is under production.</h1>
         </div>
     </div>
 </template>

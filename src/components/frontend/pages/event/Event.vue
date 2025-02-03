@@ -3,7 +3,9 @@
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
-                    <p class="para">HomePage</p>
+                    <router-link to="/">
+                        <p class="para">Home</p>
+                    </router-link>
                     <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Event</h2>
                 </div>
             </div>
@@ -12,26 +14,20 @@
         <div class="search_container">
 
             <div class="form-group input-group">
-                <input class="form-control" type="text" name="search" placeholder="Search" />
+                <input v-model="searchQuery" class="form-control" type="text" name="search" placeholder="Search" />
                 <i class="fas fa-search search-icon"></i>
             </div>
 
             <div class="form-group input-group">
-                <select class="form-select" name="" id="">
+                <select v-model="selectedCategory" class="form-select" name="" id="">
                     <option value="">Select category</option>
-                    <option v-for="(category, index) in categories" value="{{ category.name }}">{{ category.name }}
+                    <option v-for="(category, index) in categories" :value="category.id">{{ category.name }}
                     </option>
                 </select>
             </div>
-            <div class="form-group input-group">
-                <select class="form-select" name="" id="">
-                    <option value="">Select topics</option>
-                    <option v-for="(topic, index) in topics" value="{{ topic.name }}">{{ topic.name }}</option>
 
-                </select>
-            </div>
             <div class="form-group input-group">
-                <select class="form-select" name="" id="">
+                <select v-model="sortOrder" class="form-select" name="" id="">
                     <option value="">Select</option>
                     <option value="latest">Latest</option>
                 </select>
@@ -41,7 +37,7 @@
 
         <div class="card_container">
 
-            <div @click="gotoSingleBlog(blog.id)" v-for="(blog, index) in blogs" class="blogcard">
+            <div @click="gotoSingleBlog(blog.id)" v-for="(blog, index) in filteredBlogs" class="blogcard">
                 <div class="image-container">
                     <img :src="getImageUrl(blog.image)" alt="card__image" class="card__image" width="">
                 </div>
@@ -52,7 +48,8 @@
                     <div class="d-flex">
                         <div class="d-flex text-muted">
                             <i class="fa-regular fa-calendar mt-1"></i>
-                            <p style="font-size: 13px;height: 23px" class="ms-2 fw-bold">{{ formatDate(blog.created_at) }}</p>
+                            <p style="font-size: 13px;height: 23px" class="ms-2 fw-bold">{{ formatDate(blog.created_at)
+                                }}</p>
                         </div>
                         <!-- <div style="margin-left: 10px;" class="d-flex text-muted">
                             <i class="fa-regular fa-user mt-1"></i>
@@ -62,7 +59,7 @@
                     <!-- <p class="text-muted">{{ blog.slug }}</p> -->
                 </div>
                 <div class="card__footer">
-                   
+
                     <div style="cursor: pointer;" class="d-flex">
                         <i style="font-size: 18px;" class="fa-solid fa-circle-right mt-1"></i>
                         <p class="fw-bold ms-3">Read More</p>
@@ -85,6 +82,34 @@ export default {
             blogs: [],
             categories: [],
             topics: [],
+            searchQuery: "",
+            selectedCategory: "",
+            selectedTopic: "",
+            sortOrder: "",
+        }
+    },
+
+    computed: {
+        filteredBlogs() {
+            let filtered = [...this.blogs];
+
+            if (this.searchQuery) {
+                const query = this.searchQuery.toLowerCase();
+                filtered = filtered.filter(blog =>
+                    blog.name.toLowerCase().includes(query)
+                );
+            }
+
+            if (this.selectedCategory) {
+                filtered = filtered.filter(blog => blog.category_id === this.selectedCategory);
+            }
+
+
+            if (this.sortOrder === "latest") {
+                filtered.reverse();
+            }
+
+            return filtered;
         }
     },
 
@@ -103,7 +128,7 @@ export default {
                     },
                 });
                 this.blogs = response.data.data.events.data;
-                // this.categories = response.data.data.categories
+                this.categories = response.data.data.categorys
                 // this.topics = response.data.data.topics
                 console.log(response.data.data);
             } catch (error) {
@@ -156,17 +181,19 @@ export default {
     }
 
     .image-container {
-        width: 263px !important;
-        height: 290px;
+        width: 288px !important;
+        height: 200px !important;
         overflow: hidden;
         border-radius: 10px;
         display: inline-block;
     }
 
+
     .card__body p {
         height: 40px !important;
     }
 }
+
 .containerBlog {
     width: 80%;
     margin: auto;
@@ -231,23 +258,23 @@ export default {
 
 
 .image-container {
-    width: 330px; 
-    height: 290px; 
-    overflow: hidden; 
-    border-radius: 10px; 
-    display: inline-block; 
+    width: 330px;
+    height: 290px;
+    overflow: hidden;
+    border-radius: 10px;
+    display: inline-block;
 }
 
 img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 img:hover {
-    transform: scale(1.1); 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 

@@ -122,13 +122,13 @@
                 </div>
 
                 <div class="sidebarMenu">
-                    <router-link to="/" exact-active-class="active-nav" exact>Home</router-link>
-                    <router-link to="/course" active-class="active-nav">Courses</router-link>
-                    <router-link to="/choose-country" active-class="active-nav">Choose Country</router-link>
-                    <router-link to="/applicant" active-class="active-nav">Applicants</router-link>
-                    <router-link to="/blog" active-class="active-nav">Blog</router-link>
-                    <router-link to="/event" active-class="active-nav">Event</router-link>
-                    <router-link to="/about" active-class="active-nav">About</router-link>
+                    <router-link @click="closeSidebar" to="/" exact-active-class="active-nav" exact>Home</router-link>
+                    <router-link @click="closeSidebar" to="/course" active-class="active-nav">Courses</router-link>
+                    <router-link @click="closeSidebar" to="/choose-country" active-class="active-nav">Choose Country</router-link>
+                    <router-link @click="closeSidebar" to="/applicant" active-class="active-nav">Applicants</router-link>
+                    <router-link @click="closeSidebar" to="/blog" active-class="active-nav">Blog</router-link>
+                    <router-link @click="closeSidebar" to="/event" active-class="active-nav">Event</router-link>
+                    <router-link @click="closeSidebar" to="/about" active-class="active-nav">About</router-link>
 
                     <!-- Dropdown Menu -->
 
@@ -137,8 +137,8 @@
                         @mouseleave="showContactDropdown = false">
                         Contact
                         <div v-if="showContactDropdown" class="dropdown-menu">
-                            <router-link class="d-menu" to="/contact" active-class="active-nav">Contact</router-link>
-                            <router-link class="d-menu" :to="`/office/${offices.head_office.id}`">
+                            <router-link class="d-menu" @click="closeSidebar" to="/contact" active-class="active-nav">Contact</router-link>
+                            <router-link class="d-menu" @click="closeSidebar" :to="`/office/${offices.head_office.id}`">
                                 Head Office
                             </router-link>
 
@@ -156,11 +156,6 @@
                                             {{ country }} Offices
                                         </router-link>
                                         <div v-if="currentCountry === country" class="subsubmenu">
-                                            <!-- Iterate over offices in the country -->
-                                            <!-- <router-link v-for="office in countryOffices" :key="office.id"
-                                                class="dropdown-item" @click="navigateToOffice(office.id)">
-                                                {{ office.name }}
-                                            </router-link> -->
                                             <router-link v-for="office in countryOffices" :key="office.id"
                                                 class="dropdown-item" :to="`/office/${office.id}`"
                                                 @click.prevent="customLogicBeforeNavigation(office.id)">
@@ -175,7 +170,7 @@
                         </div>
                     </router-link>
 
-                    <router-link to="/appointment" active-class="active-nav">Appointment</router-link>
+                    <router-link @click="closeSidebar" to="/appointment" active-class="active-nav">Appointment</router-link>
                 </div>
 
                 <button @click="navigateLogin()" class="login_button">Sign In/Dashboard</button>
@@ -231,6 +226,7 @@ export default {
             user: null,
         };
     },
+
     setup() {
         const isSidebarOpen = ref(false);
         const sidebar = ref(null);
@@ -263,15 +259,14 @@ export default {
             isSidebarOpen.value = !isSidebarOpen.value;
         };
 
+        const closeSidebar = () => {
+            isSidebarOpen.value = false;
+        };
+
 
         const navigateLogin = () => {
             isSidebarOpen.value = false;
             window.location.href = `${appUrl}user/profile`;
-        };
-
-        const navigateRegister = () => {
-            isSidebarOpen.value = false;
-            window.location.href = "/register";
         };
 
         return {
@@ -279,9 +274,10 @@ export default {
             sidebar,
             toggleSidebar,
             navigateLogin,
-            navigateRegister,
+            closeSidebar
         };
     },
+
     methods: {
         navigateHome() {
             this.$router.push('/');
@@ -360,39 +356,19 @@ export default {
             }
         },
 
-        async getUserInfo() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    console.error("No token found in localStorage.");
-                    return;
-                }
-
-                const response = await axios.get(`${apiUrl}user`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                this.user = response.data.user; // Accessing the 'user' key
-                console.log(this.user);
-            } catch (error) {
-                console.error('Error fetching User:', error.response?.data?.message || error.message);
-            }
-        },
-
+  
         navigateToOffice(officeId) {
         },
 
         customLogicBeforeNavigation(officeId) {
             window.location.href = `/office/${officeId}`
+            this.isSidebarOpen = false;
         }
 
     },
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
         this.getHomeContent();
-        this.getUserInfo();
     },
     beforeUnmount() {
         window.removeEventListener("scroll", this.handleScroll);
@@ -509,6 +485,16 @@ export default {
         flex-direction: column;
         gap: 5px;
     }
+    .sidebar{
+        overflow-y: auto;
+    }
+    .sidebar a{
+        font-size: 18px;
+        font-weight: bold;
+        margin: 3px;
+        box-shadow: 0px 0px 30px rgba(29, 23, 77, 0.06);
+        padding: 5px;
+    }
 
     .sidebar.open .sidebarMenu {
         display: flex;
@@ -541,7 +527,7 @@ export default {
 
     .logo-img {
         height: 45px !important;
-        margin-right: 0.5rem;
+        margin-right: 10rem !important;
     }
 
     .enroll-btn {
@@ -555,9 +541,9 @@ export default {
         display: none;
     }
 
-    .sidebar {
+    /* .sidebar {
         width: 300px !important;
-    }
+    } */
 }
 
 .sidebarMenu {
@@ -744,7 +730,7 @@ export default {
     top: 0;
     right: -100%;
     height: 100%;
-    width: 350px;
+    width: 360px;
     background: #f4f4f4;
     transition: right 0.3s;
     z-index: 1100;

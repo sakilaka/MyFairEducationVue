@@ -2,7 +2,9 @@
     <div class="" style="margin-top: 110px">
         <div class="inner_section">
             <div class="container">
-                <p class="para">HomePage</p>
+                <router-link to="/">
+                    <p class="para">Home</p>
+                </router-link>
                 <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Find a Course</h2>
             </div>
         </div>
@@ -78,9 +80,17 @@
                 </div>
 
                 <!-- Right Card Section -->
-                <div class="cards-section">
+
+                <div v-if="loading" class="loader-container">
+                    <div class="loader">
+                        <img :src="logo" alt="Loading..." class="logo-animation" />
+                    </div>
+                </div>
+
+                <div v-else class="cards-section">
                     <div v-if="filteredPrograms.length > 0" v-for="(card, index) in filteredPrograms" :key="index"
                         @click="navigateToCourse(card.id)" class="card_university">
+
                         <div class="card_header">
                             <img class="university_image" :src="getImageUrl(card.university?.banner_image)"
                                 alt="University logo" />
@@ -135,27 +145,40 @@
                                 <p>{{ card?.degree?.name }}</p>
                             </div>
                         </div>
+
+
                     </div>
+
                     <div v-else>
                         <h5 class="fw-bold text-center my-3">No Matched Programs.</h5>
                     </div>
+
+                    <div class="pagination">
+                        <button class="nextBtn" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">Previous</button>
+                        <span class="mt-2 fw-bold">Page {{ currentPage }} of {{ lastPage }}</span>
+                        <button class="preBtn" @click="changePage(currentPage + 1)" :disabled="currentPage === lastPage">Next</button>
+                    </div>
+
                 </div>
 
-                
+
 
             </div>
         </div>
     </div>
 </template>
 
+
 <script>
 import axios from "axios";
-import toastr from "toastr";
 import { apiUrl, appUrl } from "../../../../globalVariables";
+import logo from "../../../../assets/image/logo.png";
 
 export default {
     data() {
         return {
+            logo,
+            loading: false,
             programs: [],
             degrees: [],
             languages: [],
@@ -173,7 +196,11 @@ export default {
                 state: "",
                 city: "",
             },
-            message: '',
+            searchQuery: "",
+            selectedCountry: "",
+            selectedDegree: "",
+            currentPage: 1,
+            lastPage: 1,
         };
     },
 
@@ -193,39 +220,54 @@ export default {
                 };
             });
         },
-        
+
         filteredPrograms() {
             return this.programs.filter((program) => {
+                const matchesSearchQuery =
+                    !this.searchQuery ||
+                    program.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+
+                const matchesCountry =
+                    !this.selectedCountry ||
+                    program.university?.country_id == this.selectedCountry;
+
+                const matchesDegree =
+                    !this.selectedDegree ||
+                    program.degree_id == this.selectedDegree;
+
                 return (
+                    matchesSearchQuery &&
+                    matchesCountry &&
+                    matchesDegree &&
                     (!this.selectedFilters.degree || program.degree_id === this.selectedFilters.degree) &&
                     (!this.selectedFilters.language || program.language_id === this.selectedFilters.language) &&
                     (!this.selectedFilters.intake || program.section_id === this.selectedFilters.intake) &&
                     (!this.selectedFilters.department || program.department_id === this.selectedFilters.department) &&
-                    (!this.selectedFilters.university || program.university_id === this.selectedFilters.university)
-                    // &&
-                    // (!this.selectedFilters.state || program.state_id === this.selectedFilters.state) &&
-                    // (!this.selectedFilters.city || program.city_id === this.selectedFilters.city)
+                    (!this.selectedFilters.university || program.university_id === this.selectedFilters.university) &&
+                    (!this.selectedFilters.city || program.university?.city_id === this.selectedFilters.city)
                 );
             });
         },
     },
 
     mounted() {
-        const urlParams = new URLSearchParams(window.location.search);
-        this.message = urlParams.get('message');
         this.getCourseList();
+        this.readRouteParams();
     },
 
     methods: {
-        applyButton(id) {
-            window.location.href = `${appUrl}apply-cart/${id}`;
-            // this.$router.push(`/apply-admission/${id}`);
+        readRouteParams() {
+            const { search, country, degree } = this.$route.query;
+            this.searchQuery = search || "";
+            this.selectedCountry = country || "";
+            this.selectedDegree = degree || "";
+            // console.log(this.selectedDegree);
+
         },
+
         async getCourseList() {
-            if(this.message !== null){
-                toastr.error(this.message);
-            }
             try {
+                this.loading = true;
                 const token = localStorage.getItem("token");
                 const response = await axios.get(`${apiUrl}course_list`, {
                     headers: {
@@ -243,22 +285,106 @@ export default {
                 console.log(response.data);
             } catch (error) {
                 console.error("Error fetching configurations:", error);
+            } finally {
+                this.loading = false;
             }
         },
+        async getCourseList(page = 1) {
+            try {
+                this.loading = true;
+                const token = localStorage.getItem("token");
+                const response = await axios.get(`${apiUrl}course_list?page=${page}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                this.programs = response.data.courses.data;
+                this.degrees = response.data.degrees;
+                this.languages = response.data.languages;
+                this.departments = response.data.departments;
+                this.universities = response.data.universities;
+                this.sections = response.data.sections;
+                this.states = response.data.states;
+                this.cities = response.data.cities;
+                this.currentPage = response.data.courses.current_page;
+                this.lastPage = response.data.courses.last_page;
+            } catch (error) {
+                console.error("Error fetching configurations:", error);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        changePage(page) {
+            this.getCourseList(page);
+        },
+
         getImageUrl(item) {
             return `${appUrl}upload/university/${item}`;
         },
+
         navigateToCourse(courseId) {
             this.$router.push({ path: `/course/${courseId}` });
         },
-        applyBtn() {
-            console.log('fdsg');
-        }
     },
 };
 </script>
 
 <style scoped>
+.pagination{
+    margin-left: 73px;
+    margin-top: 10px;
+}
+.nextBtn{
+    background-color: #824fa3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 20px;
+    margin-right: 20px;
+}
+.preBtn{
+    background-color: #824fa3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 20px;
+    margin-left: 20px;
+}
+
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader .logo-animation {
+    width: 200px;
+    height: 100px;
+    animation: zoomInOut 1.5s infinite ease-in-out;
+}
+
+@keyframes zoomInOut {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 .apply_btn {
     background-color: #f39c12;
     color: white;
@@ -318,6 +444,13 @@ export default {
     margin-top: 30px;
 }
 
+@media (max-width: 361px) {
+    .cards-section {
+        gap: 25px !important;
+        margin-left: -7px !important;
+    }
+}
+
 @media (max-width: 1100px) {
     .layout {
         display: flex;
@@ -330,20 +463,21 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        /* gap: 20px; */
         border: 1px solid #824fa3 !important;
         border-radius: 5px !important;
         padding: 15px !important;
         background: #fff !important;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
-        width: 355px !important;
-        height: 702px !important;
+        width: 350px !important;
+        height: 650px !important;
         margin-left: 1px !important;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
     .university_image {
-        width: 354px;
+        width: 349px;
+        height: 260px;
     }
 
     .intake {
@@ -370,6 +504,7 @@ export default {
     border: 1px solid #ddd;
     border-radius: 3px;
     height: 745px;
+    margin: 0px auto;
 }
 
 .form-box h3 {

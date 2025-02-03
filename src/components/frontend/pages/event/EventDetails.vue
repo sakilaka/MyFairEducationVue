@@ -3,7 +3,9 @@
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
-                    <p class="para">HomePage</p>
+                    <router-link to="/">
+                        <p class="para">Home</p>
+                    </router-link>
                     <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Single Event</h2>
                 </div>
             </div>
@@ -44,7 +46,8 @@
                 <div class="first_side">
                     <p class="recent">Recent Events</p>
                     <div style="padding: 30px 30px;" class="recentBlog">
-                        <div @click="gotoSingleBlog(blog.id)" v-for="(blog, index) in latestEvents" :key="index" class="blog-item ">
+                        <div @click="gotoSingleBlog(blog.id)" v-for="(blog, index) in latestEvents" :key="index"
+                            class="blog-item ">
                             <div class="d-flex gap-3 my-3">
                                 <img class="sideBlogImage" :src="getImageUrl(blog.image)" alt="Blog Image" />
                                 <h6 class="fw-bold mt-2">{{ truncateText(blog.name, 30) }}</h6>
@@ -155,38 +158,46 @@ export default {
 
 <style scoped>
 @media (max-width: 1100px) {
-   .blogDetails{
-    display: flex !important;
-    flex-direction: column;
-   }
-   .blog-content{
-    width: 100% !important;
-   }
-   .first_side{
-    width: 350px !important;
-   }
-   .image-container {
+    .blogDetails {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .blog-content {
+        width: 100% !important;
+    }
+
+    .first_side {
+        width: 350px !important;
+    }
+
+    .image-container {
         width: 263px !important;
         height: 290px;
         overflow: hidden;
         border-radius: 10px;
         display: inline-block;
     }
-    .subtitle{
+
+    .subtitle {
         width: 300px;
         font-size: 12px;
         margin: 0px auto;
     }
-    .mainTitle{
+
+    .mainTitle {
         font-size: 20px !important;
     }
-    .recentBlog{
+
+    .recentBlog {
         padding: 0px !important;
     }
 }
-.sideBlogImage{
+
+.sideBlogImage {
     width: 160px;
 }
+
 .see_more {
     padding: 8px 30px;
     border: none;

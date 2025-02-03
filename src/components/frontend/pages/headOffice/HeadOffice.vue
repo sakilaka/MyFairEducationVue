@@ -3,7 +3,9 @@
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
-                    <p class="para">HomePage</p>
+                    <router-link to="/">
+                        <p class="para">Home</p>
+                    </router-link>
                     <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Office Details</h2>
                 </div>
             </div>
@@ -114,6 +116,7 @@ export default {
     color: #824fa3;
     font-weight: bold;
 }
+
 .map {
     box-shadow: 0px 0px 5px rgb(135, 135, 135);
 }

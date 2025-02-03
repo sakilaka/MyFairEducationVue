@@ -5,34 +5,47 @@
             <span>Our Top <span class="highlight">Categories</span> </span>
         </h2>
 
-        <!-- Swiper for small screens -->
-        <swiper
-            v-if="isSmallScreen"
-            :slides-per-view="'auto'"
-            :space-between="20"
-            :pagination="{ clickable: true }"
-            class="categories-slider"
-        >
-            <swiper-slide v-for="(category, index) in categories.slice(0, 9)" :key="index" class="category-card d-flex">
-                <div class="icon-container">
-                    <img :src="getImageUrl(category.image)" alt="category icon" />
-                </div>
-                <div class="ms-4">
-                    <h3 class="category-title">{{ category.name }}</h3>
-                    <p class="category-description">{{ category.courses.length }} Programs.</p>
-                </div>
-            </swiper-slide>
-        </swiper>
+        <div>
+            <swiper v-if="isSmallScreen" :slides-per-view="'auto'" :space-between="20" :pagination="{ clickable: true }"
+                class="categories-slider">
+                <swiper-slide v-for="(category, index) in categories.slice(0, 4)" :key="index"
+                    class="category-card d-flex" @click="handleCategoryClick(category.id)">
+                    <div class="icon-container">
+                        <img :src="getImageUrl(category.image)" alt="category icon" />
+                    </div>
+                    <div class="ms-4">
+                        <h3 class="category-title">{{ category.name }}</h3>
+                        <p class="category-description">{{ category.courses.length }} Programs.</p>
+                    </div>
+                </swiper-slide>
+            </swiper>
 
-        <!-- Grid for larger screens -->
-        <div v-else class="categories-grid">
-            <div v-for="(category, index) in categories.slice(0, 9)" :key="index" class="category-card d-flex">
-                <div class="icon-container">
-                    <img :src="getImageUrl(category.image)" alt="category icon" />
-                </div>
-                <div class="ms-4">
-                    <h3 class="category-title">{{ category.name }}</h3>
-                    <p class="category-description">{{ category.courses.length }} Programs.</p>
+            <!-- Second Swiper -->
+            <swiper v-if="isSmallScreen" :slides-per-view="'auto'" :space-between="20" :pagination="{ clickable: true }"
+                class="categories-slider mt-3">
+                <swiper-slide v-for="(category, index) in categories.slice(4, 9)" :key="index"
+                    class="category-card d-flex" @click="handleCategoryClick(category.id)">
+                    <div class="icon-container">
+                        <img :src="getImageUrl(category.image)" alt="category icon" />
+                    </div>
+                    <div class="ms-4">
+                        <h3 class="category-title">{{ category.name }}</h3>
+                        <p class="category-description">{{ category.courses.length }} Programs.</p>
+                    </div>
+                </swiper-slide>
+            </swiper>
+
+            <!-- Grid for larger screens -->
+            <div v-else class="categories-grid">
+                <div v-for="(category, index) in categories.slice(0, 9)" :key="index" class="category-card d-flex"
+                    @click="handleCategoryClick(category.id)">
+                    <div class="icon-container">
+                        <img :src="getImageUrl(category.image)" alt="category icon" />
+                    </div>
+                    <div class="ms-4">
+                        <h3 class="category-title">{{ category.name }}</h3>
+                        <p class="category-description">{{ category.courses.length }} Programs.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,38 +61,38 @@ import "swiper/css/pagination";
 
 export default {
     components: { Swiper, SwiperSlide },
+    props: {
+        categories: {
+            type: Array,
+            required: true,
+        },
+    },
     data() {
         return {
-            categories: [],
             isSmallScreen: window.innerWidth <= 1247,
         };
     },
     mounted() {
-        this.getHomeContent();
         window.addEventListener("resize", this.checkScreenSize);
     },
     beforeUnmount() {
         window.removeEventListener("resize", this.checkScreenSize);
     },
     methods: {
-        async getHomeContent() {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(`${apiUrl}home`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                this.categories = response.data.data.degrees;
-            } catch (error) {
-                console.error("Error fetching configurations:", error);
-            }
-        },
         getImageUrl(item) {
             return `${appUrl}upload/degree/${item}`;
         },
         checkScreenSize() {
             this.isSmallScreen = window.innerWidth <= 1247;
+        },
+        handleCategoryClick(degreeId) {
+            // Navigate to Course.vue with the selected degree_id
+            this.$router.push({
+                path: "/course",
+                query: {
+                    degree: degreeId,
+                },
+            });
         },
     },
 };
@@ -91,12 +104,13 @@ export default {
     .categories-grid {
         display: none;
     }
+
     .category-title {
         font-size: 0.9rem !important;
     }
 
-    .section-title{
-        font-size: 24px !important;
+    .section-title {
+        font-size: 20px !important;
     }
 }
 

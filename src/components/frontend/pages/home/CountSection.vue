@@ -1,71 +1,53 @@
 <template>
-    <div>
-        <h2 class="fw-bold mt-5 text-center">Strength In numbers</h2>
-    </div>
-    <div class="count_Section">
-        <div class="count-wrapper">
-            <div class="count-box" v-for="(item, index) in countData" :key="index">
-                <div class="count">{{ animatedCounts[index] }} +</div>
-                <div class="label">{{ item.text }}</div>
+    <div class="counter-content pt-3 pb-4" style="margin-top: 4rem;">
+        <div class="container-lg">
+            <div class="text-center mb-5">
+                <h3 class="ca-card-title d-block text-center mb-4 fw-bold font-dm-sans-title">
+                    Strength In Numbers
+                </h3>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div v-for="(item, index) in countData" :key="index"
+                            class="col-6 col-sm-6 col-md-3 mb-4 text-center border-end">
+                            <h3 class="fw-bold h1 mb-1">
+                                <span class="counter d-inline-block" :style="{ color: getColor(index) }">
+                                    {{ animatedCounts[index] }}+
+                                </span>
+                            </h3>
+                            <div>{{ item.text }}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import axios from "axios";
-import { apiUrl } from "../../../../globalVariables";
-
 export default {
+    props: {
+        countData: {
+            type: Array,
+            required: true,
+        },
+    },
     data() {
         return {
-            countData: [],
             animatedCounts: [],
-            animationInterval: null
+            animationInterval: null,
         };
     },
-
     mounted() {
-        this.getHomeContent();
+        this.animatedCounts = new Array(this.countData.length).fill(0);
+        this.startCountingAnimation();
     },
-
     methods: {
-        async getHomeContent() {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(`${apiUrl}home`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                const rawData = response.data.data.home_content;
-                this.countData = [
-                    { num: this.parseNumber(rawData.count_num_1), text: rawData.count_text_1 },
-                    { num: this.parseNumber(rawData.count_num_2), text: rawData.count_text_2 },
-                    { num: this.parseNumber(rawData.count_num_3), text: rawData.count_text_3 },
-                    { num: this.parseNumber(rawData.count_num_4), text: rawData.count_text_4 }
-                ];
-                this.animatedCounts = new Array(this.countData.length).fill(0);
-                this.startCountingAnimation();
-            } catch (error) {
-                console.error("Error fetching home content:", error);
-            }
+        getColor(index) {
+            const colors = ["#824fa3", "#F14D5D", "#55BC7E", "#f39c12"];
+            return colors[index] || "black";
         },
-
-        parseNumber(value) {
-            if (typeof value === "string") {
-                value = value.toLowerCase();
-                if (value.includes("k")) {
-                    return parseFloat(value) * 1000;
-                }
-                if (value.includes("m")) {
-                    return parseFloat(value) * 1000000;
-                }
-            }
-            return parseFloat(value) || 0;
-        },
-
         startCountingAnimation() {
             clearInterval(this.animationInterval);
 
@@ -75,7 +57,6 @@ export default {
                 });
             }, 3000);
         },
-
         animateCount(index, targetNumber) {
             let start = 0;
             const duration = 2000;
@@ -97,66 +78,10 @@ export default {
             };
 
             updateCount();
-        }
+        },
     },
-
     beforeUnmount() {
         clearInterval(this.animationInterval);
-    }
+    },
 };
 </script>
-
-<style scoped>
-@media (max-width: 1247px) {
-    .count_Section {
-        display: flex !important;
-        flex-direction: column;
-    }
-
-    .count-wrapper {
-        display: flex !important;
-        flex-direction: column;
-        gap: 50px !important;
-    }
-}
-
-.count_Section {
-    background-color: #824fa3;
-    padding: 100px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.count-wrapper {
-    display: flex;
-    gap: 170px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.count-box {
-    text-align: center;
-    color: #fff;
-}
-
-.icon {
-    margin-bottom: 15px;
-}
-
-.icon img {
-    width: 60px;
-    /* Adjust size of the icons */
-}
-
-.count {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.label {
-    font-size: 1rem;
-}
-</style>

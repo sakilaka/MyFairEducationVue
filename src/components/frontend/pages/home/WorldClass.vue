@@ -40,12 +40,22 @@ import { apiUrl, appUrl } from "../../../../globalVariables";
 export default {
     data() {
         return {
-            universities: [],
-            program: 0,
+            // universities: [],
+            // program: 0,
         };
     },
+    props: {
+        universities: {
+            type: Array,
+            required: true,
+        },
+        program: {
+            type: Number,
+            required: true,
+        },
+    },
     mounted() {
-        this.getHomeContent();
+        // this.getHomeContent();
     },
 
     methods: {
@@ -124,7 +134,7 @@ export default {
         margin-top: -21px;
     }
     .title{
-        font-size: 24px !important;
+        font-size: 20px !important;
         margin-top: 20px !important;
         width: 250px;
         margin: 0px auto;

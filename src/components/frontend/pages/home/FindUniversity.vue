@@ -5,7 +5,7 @@
             Find Univer<span class="borderStyle">sities</span> By Country
         </h1>
         <div class="row justify-content-center">
-            <div v-for="(item, index) in countries.slice(0, 12)" :key="index" class="card_country shadow-md">
+            <div v-for="(item, index) in countries.slice(0, 12)" :key="index" @click="handleCountryClick(item.id)" class="card_country shadow-md">
                 <div class="card_content">
                     <img :src="getImageUrl(item.image)" class="card_image" alt="Country Image">
                     <hr class="w-100 m-0">
@@ -35,28 +35,44 @@ import { apiUrl, appUrl } from "../../../../globalVariables";
 export default {
     data() {
         return {
-            countries: [],
+            // countries: [],
         };
     },
 
+    props: {
+        countries: {
+            type: Array,
+            required: true,
+        },
+    },
+
     mounted() {
-        this.getHomeContent();
+        // this.getHomeContent();
     },
 
     methods: {
-        async getHomeContent() {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(`${apiUrl}home`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                this.countries = response.data.data.cities; // Assign the fetched content to home_content
-                console.log(this.countries);
-            } catch (error) {
-                console.error("Error fetching home content:", error);
-            }
+        // async getHomeContent() {
+        //     try {
+        //         const token = localStorage.getItem("token");
+        //         const response = await axios.get(`${apiUrl}home`, {
+        //             headers: {
+        //                 Authorization: `Bearer ${token}`,
+        //             },
+        //         });
+        //         this.countries = response.data.data.cities; // Assign the fetched content to home_content
+        //         console.log(this.countries);
+        //     } catch (error) {
+        //         console.error("Error fetching home content:", error);
+        //     }
+        // },
+
+        handleCountryClick(countryid) {
+            this.$router.push({
+                path: "/course",
+                query: {
+                    country: countryid,
+                },
+            });
         },
 
         getImageUrl(item){
@@ -79,13 +95,20 @@ export default {
         width: 100% !important;
     }
     .title{
-        font-size: 24px !important;
+        font-size: 20px !important;
         margin-top: 20px !important;
         width: 250px;
         margin: 0px auto;
     }
     .borderStyle{
         border: none !important;
+    }
+    .card_info{
+        display: flex;
+        justify-content: flex-start !important;
+    }
+    .fa-chevron-right{
+        margin-left: 10px;
     }
 }
 

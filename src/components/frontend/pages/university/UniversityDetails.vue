@@ -12,7 +12,7 @@
 
                 <div class="textDiv">
                     <h4 class="fw-bold">{{ university.name }}</h4>
-                    <p>HomePage.Find a university</p>
+                    <p> <router-link to="/" class="text-white">Home</router-link> .Find a university</p>
                 </div>
             </div>
         </div>
@@ -107,7 +107,8 @@
                     </div>
 
                     <div v-if="activeTab === 'About'">
-                        <p v-html="university.about"></p>
+                        <p v-if="university.about === null">No admissions process</p>
+                        <p class="editor" v-html="university.about"></p>
                     </div>
 
                     <div v-if="activeTab === 'Fees'">
@@ -156,12 +157,12 @@
 
                     <div v-if="activeTab === 'Accomadation'">
                         <p v-if="university.accommodation === null">No accommodation</p>
-                        <p v-html="university.accommodation"></p>
+                        <p class="editor" v-html="university.accommodation"></p>
                     </div>
 
                     <div v-if="activeTab === 'Admission'">
                         <p v-if="university.admissions_process === null">No admissions process</p>
-                        <p v-html="university.admissions_process"></p>
+                        <p class="editor" v-html="university.admissions_process"></p>
                     </div>
 
                     <div v-if="activeTab === 'Scholarship'">
@@ -410,6 +411,9 @@ export default {
 
 <style scoped>
 @media (max-width: 1100px) {
+    .editor{
+        width: 300px !important;
+    }
     .navList {
         width: 350px;
         margin: auto;

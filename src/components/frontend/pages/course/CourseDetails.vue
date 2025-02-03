@@ -8,7 +8,7 @@
             <h1 class="fw-bold pName">{{ program.name }}</h1>
             <div class="mt-3 d-flex">
                 <img class="logo_" :src="getImageUrl(program?.university?.image)" alt="">
-                <div class="d-flex justify-content-between w-100">
+                <div class="d-flex justify-content-between w-100 topCard">
                     <div class="d-flex gap-2 ms-3 info">
                         <div>
                             <p>University</p>
@@ -260,6 +260,10 @@ export default {
 
 <style scoped>
 @media (max-width: 1247px) {
+    .topCard{
+        display: flex !important;
+        flex-direction: column;
+    }
     .cardFee {
         width: 50% !important;
         margin: 10px;
@@ -277,7 +281,7 @@ export default {
     }
 
     .info_container {
-        height: 530px !important;
+        height: 660px !important;
     }
 
     .info {
@@ -296,6 +300,7 @@ export default {
     /* .nav-tabs .nav-link.active{
         width: 200px !important;
     } */
+
     .sideSection {
         height: 400px !important;
         width: 100%;
@@ -305,8 +310,8 @@ export default {
         width: 100%;
     }
     .btn_Apply{
-        padding: 4px 10px !important;
-        font-size: 13px;
+        padding: 10px 20px !important;
+        font-size: 14px;
     }
 }
 

@@ -11,11 +11,7 @@
                         </div>
                         <div class="mt-2">
                             <p class="mb-4 badge bg-success">Featured</p>
-                            <!-- <div class="d-flex gap-3">
-                                <p class="dateStyle">{{ formatDate(item.created_at).date }}</p>
-                                <p style="font-size: 20px;" class="mt-2 fw-bold">{{ formatDate(item.created_at).month }}
-                                </p>
-                            </div> -->
+                          
                             <h6 style="height: 85px;" class="fw-bold mt-1 ms-2 title">{{ item.title ? item.title : item.name }}</h6>
                             <div class="d-flex gap-2 mt-3 ms-2">
                                 <img class="authorImage" :src="getImageUrl(item)" alt="">
@@ -65,6 +61,13 @@ export default {
             latestUpdate: []
         };
     },
+
+    // props: {
+    //     latestUpdate: {
+    //         type: Array,
+    //         required: true,
+    //     },
+    // },
 
     mounted() {
         this.getHomeContent();
@@ -127,11 +130,16 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .borderStyle{
     border-bottom: 5px solid #824fa3;
     padding-bottom: 8px;
+}
+@media (max-width: 1400px) {
+    .contain {
+        display: flex !important;
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 1247px) {
@@ -146,7 +154,8 @@ export default {
     }
 
     .blog_image{
-        width: 315px !important;
+        width: 100% !important;
+        margin: auto !important;
     }
 
     .contain {
@@ -157,6 +166,7 @@ export default {
     .sub_form{
         width: 350px !important;
         padding-top: 80px !important;
+        margin: 0px auto !important;
     }
 
     .title{
@@ -207,6 +217,7 @@ export default {
     padding: 20px;
     background-color: #f2fafe;
     /* width: 100%; */
+    cursor: pointer;
 }
 
 .content {
@@ -224,7 +235,7 @@ export default {
     padding-top: 120px;
     width: 550px;
     height: 515px;
-    margin-top: 31px;
+    margin-left: 10px;
 }
 
 .text-center {
