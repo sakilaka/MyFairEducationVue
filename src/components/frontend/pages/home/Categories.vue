@@ -6,7 +6,7 @@
         </h2>
 
         <div>
-            <swiper v-if="isSmallScreen" :slides-per-view="'auto'" :space-between="20" :pagination="{ clickable: true }"
+            <swiper style="cursor: pointer;" v-if="isSmallScreen" :slides-per-view="'auto'" :space-between="20" :pagination="{ clickable: true }"
                 class="categories-slider">
                 <swiper-slide v-for="(category, index) in categories.slice(0, 4)" :key="index"
                     class="category-card d-flex" @click="handleCategoryClick(category.id)">
@@ -21,7 +21,7 @@
             </swiper>
 
             <!-- Second Swiper -->
-            <swiper v-if="isSmallScreen" :slides-per-view="'auto'" :space-between="20" :pagination="{ clickable: true }"
+            <swiper style="cursor: pointer;" v-if="isSmallScreen" :slides-per-view="'auto'" :space-between="20" :pagination="{ clickable: true }"
                 class="categories-slider mt-3">
                 <swiper-slide v-for="(category, index) in categories.slice(4, 9)" :key="index"
                     class="category-card d-flex" @click="handleCategoryClick(category.id)">
@@ -37,7 +37,7 @@
 
             <!-- Grid for larger screens -->
             <div v-else class="categories-grid">
-                <div v-for="(category, index) in categories.slice(0, 9)" :key="index" class="category-card d-flex"
+                <div style="cursor: pointer;" v-for="(category, index) in categories.slice(0, 9)" :key="index" class="category-card d-flex"
                     @click="handleCategoryClick(category.id)">
                     <div class="icon-container">
                         <img :src="getImageUrl(category.image)" alt="category icon" />
@@ -162,11 +162,14 @@ export default {
     transition: transform 0.3s, box-shadow 0.3s;
     height: 105px;
     box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
+    transition: transform 0.2s ease-in;
 }
 
 .category-card:hover {
-    background-color: #824fa3;
-    color: white;
+    /* background-color: #824fa3;
+    color: white; */
+    transform: scale(1.03);
+    /* box-shadow: 1px 1px 2px #824fa3; */
 }
 
 .icon-container img {

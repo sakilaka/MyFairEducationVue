@@ -3,24 +3,24 @@
         <h2 class="fw-bold">Latest <span class="borderStyle">Updates</span></h2>
         <div class="d-flex gap-3 contain" style="margin-top: 20px;">
 
-            <div style="width: 100%;" class="blog row">
-                <div @click="singleLatest(item)" v-for="(item, index) in latestUpdate.slice(0,3)" :key="index" class="background-container col-md-4">
-                    <div class="content">
+            <div style="width: 100%;" class="blog row mx-auto">
+                <div @click="singleLatest(item)" v-for="(item, index) in latestUpdate.slice(0,3)" :key="index" class="content col-md-6 col-lg-4 col-12">
+                   
                         <div>
                             <img class="blog_image" :src="item?.banner ? item.banner : getImageUrl(item)" alt="">
                         </div>
                         <div class="mt-2">
                             <p class="mb-4 badge bg-success">Featured</p>
                           
-                            <h6 style="height: 85px;" class="fw-bold mt-1 ms-2 title">{{ item.title ? item.title : item.name }}</h6>
+                            <h6 style="height: 35px;" class="fw-bold mt-1 ms-2 title">{{ item.title ? truncateText(item.title, 35) : truncateText(item.name,30) }}</h6>
                             <div class="d-flex gap-2 mt-3 ms-2">
                                 <img class="authorImage" :src="getImageUrl(item)" alt="">
-                                <div class="mt-1 ms-1">
+                                <div class="mt-3 ms-1">
                                     <p class="authorName">{{ item.author }}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -45,6 +45,7 @@
                     <a href="#" class="text-decoration-none" style="color: #ffa726;">Privacy Policy</a>.
                 </p>
             </div>
+
         </div>
     </div>
 </template>
@@ -126,32 +127,28 @@ export default {
                 return `${item.banner}`;
             }
         },
+        truncateText(text, maxLength) {
+            if (!text) return "";
+            return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+        },
     }
 };
 </script>
 
 <style scoped>
+
 .borderStyle{
     border-bottom: 5px solid #824fa3;
     padding-bottom: 8px;
 }
-@media (max-width: 1400px) {
+/* @media (max-width: 1400px) {
     .contain {
-        display: flex !important;
-        flex-direction: column;
+       margin: 30px !important;
     }
-}
+} */
 
 @media (max-width: 1247px) {
-    .background-container {
-        /* background-image: url('your-image-url.jpg'); */
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        padding: 20px;
-        background-color: #f2fafe;
-        width: 350px !important;
-    }
+    
 
     .blog_image{
         width: 100% !important;
@@ -171,7 +168,7 @@ export default {
 
     .title{
         font-size: 14px;
-        height: 55px !important;
+        height: 30px !important;
         width: 200px;
     }
     .authorName{
@@ -189,16 +186,14 @@ export default {
 }
 
 .blog_image {
-    height: 165px;
-    width: 265px;
+    height: 160px;
+    width: 100%;
     border-radius: 7px;
-    margin-top: -17px;
-    margin-left: -28px;
 }
 
-.content:hover {
+/* .content:hover {
     box-shadow: 0px 0px 40px rgba(29, 23, 77, .06);
-}
+} */
 
 .dateStyle {
     background-color: rgb(130, 79, 163);
@@ -209,22 +204,14 @@ export default {
     font-weight: bold;
 }
 
-.background-container {
-    /* background-image: url('your-image-url.jpg'); */
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    padding: 20px;
-    background-color: #f2fafe;
-    /* width: 100%; */
-    cursor: pointer;
-}
+
 
 .content {
     background-color: white;
     padding: 15px 26px;
-    height: 400px;
+    height: 350px;
     border-radius: 10px;
+    box-shadow: 0px 0px 40px rgba(29, 23, 77, .06);
 }
 
 .sub_form {
@@ -233,7 +220,7 @@ export default {
     color: rgb(255, 255, 255);
     padding: 20px;
     padding-top: 120px;
-    width: 550px;
+    width: 490px;
     height: 515px;
     margin-left: 10px;
 }

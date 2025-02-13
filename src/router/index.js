@@ -36,13 +36,13 @@ const routes = [
     
    
     {
+        path: '/',
+        component: Home,
+    },
+    {
         path: '/frontend',
         component: FrontendLayout,
         children: [
-            {
-                path: '/',
-                component: Home,
-            },
             {
                 path: '/login',
                 component: Login,

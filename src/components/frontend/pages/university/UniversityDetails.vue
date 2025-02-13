@@ -29,7 +29,7 @@
 
         <div class="container">
             <div class="row mt-5">
-                <div class="col-md-9">
+                <div class="col-md-9 col-12">
                     <!-- Dynamic Content Rendering -->
                     <!-- <div v-for="(item, index) in navItems" 
                         :key="index" 
@@ -107,8 +107,8 @@
                     </div>
 
                     <div v-if="activeTab === 'About'">
-                        <p v-if="university.about === null">No admissions process</p>
-                        <p class="editor" v-html="university.about"></p>
+                        <p v-if="university.about === null">No about</p>
+                        <p class="ql-editor" v-html="university.about"></p>
                     </div>
 
                     <div v-if="activeTab === 'Fees'">
@@ -124,7 +124,7 @@
                                         Tuition Fee:
                                         <span
                                             v-if="university.fees_structure?.tuition_fees_1[index] && university.fees_structure?.tuition_fees_2[index]">
-                                            ¥{{ university.fees_structure.tuition_fees_1[index] }} – ¥{{
+                                            ${{ university.fees_structure.tuition_fees_1[index] }} – ${{
                                                 university.fees_structure.tuition_fees_2[index] }}
                                         </span>
                                         <span v-else>
@@ -137,16 +137,16 @@
                                 <div>
                                     <p style="display: flex;justify-content: space-between;">
                                         Accommodation Fees:
-                                        <span>¥{{ university.fees_structure.accommodation_fees_1 }} – ¥{{
+                                        <span>${{ university.fees_structure.accommodation_fees_1 }} – ${{
                                             university.fees_structure.accommodation_fees_2 }}</span>
                                     </p>
-                                    <p style="display: flex;justify-content: space-between;">Insurance Fee: <span>¥{{
+                                    <p style="display: flex;justify-content: space-between;">Insurance Fee: <span>${{
                                         university.fees_structure.insurance_fee }}</span></p>
                                     <p style="display: flex;justify-content: space-between;">Visa Extension Fee:
-                                        <span>¥{{ university.fees_structure.visa_extension_fee }}</span>
+                                        <span>${{ university.fees_structure.visa_extension_fee }}</span>
                                     </p>
                                     <p style="display: flex;justify-content: space-between;">Medical In China Fee:
-                                        <span>¥{{ university.fees_structure.medical_in_china_fee
+                                        <span>${{ university.fees_structure.medical_in_china_fee
                                             }}</span>
                                     </p>
                                 </div>
@@ -157,12 +157,12 @@
 
                     <div v-if="activeTab === 'Accomadation'">
                         <p v-if="university.accommodation === null">No accommodation</p>
-                        <p class="editor" v-html="university.accommodation"></p>
+                        <p class="ql-editor" v-html="university.accommodation"></p>
                     </div>
 
                     <div v-if="activeTab === 'Admission'">
                         <p v-if="university.admissions_process === null">No admissions process</p>
-                        <p class="editor" v-html="university.admissions_process"></p>
+                        <p class="ql-editor" v-html="university.admissions_process"></p>
                     </div>
 
                     <div v-if="activeTab === 'Scholarship'">
@@ -256,7 +256,7 @@
 
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 col-12">
                     <div class="sidebar">
                         <div class="p-3">
                             <p>Institute</p>
@@ -283,13 +283,12 @@
 import axios from 'axios';
 import { apiUrl, appUrl } from '../../../../globalVariables';
 import LatestUpdate from '../home/LatestUpdate.vue';
+import "quill/dist/quill.snow.css";
 
 export default {
     data() {
         return {
-            university: {
-
-            },
+            university: {},
             programs: [],
             navItems: [
                 'About',
@@ -301,7 +300,7 @@ export default {
                 'FAQ',
                 'Gallery'
             ],
-            activeTab: 'Program',
+            activeTab: 'About',
             scholarships: [],
             imageGallery: [],
             hasImages: false,
@@ -314,29 +313,36 @@ export default {
 
     computed: {
         filteredScholarships() {
-            // Ensure scholarships and university.scholarships are properly defined
-            if (this.university.scholarships.length > 0) {
-                // Filter scholarships that match IDs in university.scholarships
-                return this.scholarships.filter((scholarship) =>
-                    this.university.scholarships.includes(String(scholarship.id))
+            // Parse the stringified scholarships array into an actual array
+            const universityScholarships = JSON.parse(this.university.scholarships);
+
+            if (Array.isArray(universityScholarships) && universityScholarships.length > 0) {
+                // Filter the scholarships based on the parsed array
+                const filtered = this.scholarships.filter((scholarship) =>
+                    universityScholarships.includes(String(scholarship.id))
                 );
+                console.log('Filtered Scholarships:', filtered);
+                return filtered;
             }
+
             return [];
         },
     },
+
 
     mounted() {
         this.getUniversityList();
     },
 
     methods: {
+
         getFeeLabel(fee) {
             if (fee === 1) {
                 return "Free";
             } else if (fee === 0 || fee === null || fee === undefined) {
                 return "N/A";
             } else {
-                return `¥${fee}`; // Modify for currency if required
+                return `$${fee}`; // Modify for currency if required
             }
         },
         async getUniversityList() {
@@ -350,6 +356,8 @@ export default {
                 this.university = response.data.data.university;
                 this.programs = response.data.data.university_courses;
                 this.scholarships = response.data.data.scholarships;
+                console.log(this.scholarships);
+
                 if (response.data.data.university.fees_structure) {
                     try {
                         response.data.data.university.fees_structure = JSON.parse(response.data.data.university.fees_structure);
@@ -410,10 +418,31 @@ export default {
 </script>
 
 <style scoped>
+.ql-editor {
+    max-width: 100%;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.ql-editor figure {
+    max-width: 100% !important;
+    overflow: hidden;
+    /* Prevents content overflow */
+    text-align: center;
+    /* Optional: Centers the image */
+}
+
+.ql-editor .image img {
+    max-width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
 @media (max-width: 1100px) {
-    .editor{
+    .editor {
         width: 300px !important;
     }
+
     .navList {
         width: 350px;
         margin: auto;

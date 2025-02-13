@@ -133,12 +133,12 @@
                             </div>
                             <div class="col-md-6 col-12 content">
                                 <!-- <p v-html="truncatedComment"></p> -->
-                                <p v-html="truncateText(testimonial.comment, 300)"></p>
-                                <div class="mt-4 d-flex">
+                                <p class="ql-editor" v-html="truncateText(testimonial.comment, 300)"></p>
+                                <div class="mt-4 ms-3 d-flex">
                                     <p class="fw-bold">{{ testimonial.name }}</p>
                                     <p class="ms-3 text-muted">{{ testimonial.designation }}</p>
                                 </div>
-                                <div class="mt-5 d-flex gap-4">
+                                <div class="mt-2 ms-3 d-flex gap-4">
                                     <i class="fa-brands fa-facebook"></i>
                                     <i class="fa-brands fa-instagram"></i>
                                     <i class="fa-brands fa-twitter"></i>
@@ -149,6 +149,7 @@
                 </swiper>
             </div>
         </div>
+        
 
         <div class="main_meet">
             <div class="meetSection">
@@ -280,6 +281,7 @@ import passport from '../../../../assets/image/passport.webp'
 import user from '../../../../assets/image/user.jpg'
 import girl from '../../../../assets/image/girl.png'
 import TestUser from '../../../../assets/image/testUser.webp'
+import "quill/dist/quill.snow.css";
 
 import axios from 'axios';
 import { apiUrl, appUrl } from '../../../../globalVariables';
@@ -385,7 +387,7 @@ export default {
     }
 
     .testimonial-section {
-        height: 900px !important;
+        height: 800px !important;
     }
     .tabs span{
         font-size: 15px !important;
@@ -395,7 +397,10 @@ export default {
     }
     .profile{
         width: 100% !important;
-        height: 300px !important;
+        height: 200px !important;
+    }
+    .ql-editor{
+        height: 70% !important;
     }
 }
 
@@ -436,7 +441,7 @@ export default {
 
 .profile {
     width: 80%;
-    height: 390px;
+    height: 300px;
 }
 
 .info {

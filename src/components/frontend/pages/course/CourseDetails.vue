@@ -1,5 +1,5 @@
 <template>
-    <div class="" style="margin-top: 110px;">
+    <div class="mainHead" style="margin-top: 110px;">
         <div>
             <img class="bannerImage" :src="getImageUrl(program?.university?.banner_image)" alt="">
         </div>
@@ -10,21 +10,21 @@
                 <img class="logo_" :src="getImageUrl(program?.university?.image)" alt="">
                 <div class="d-flex justify-content-between w-100 topCard">
                     <div class="d-flex gap-2 ms-3 info">
-                        <div>
+                        <div class="sideMargin">
                             <p>University</p>
-                            <p class="fw-bold">{{ program?.university?.name }}</p>
+                            <p class="fw-bold fontSize">{{ program?.university?.name }}</p>
                         </div>
-                        <div class="ms-2">
+                        <div class="ms-2 sideMargin">
                             <p>Degree</p>
-                            <p class="fw-bold">{{ program?.degree?.name }}</p>
+                            <p class="fw-bold fontSize">{{ program?.degree?.name }}</p>
                         </div>
-                        <div class="ms-2">
+                        <div class="ms-2 sideMargin">
                             <p>Department</p>
-                            <p class="fw-bold">{{ program?.department?.name }}</p>
+                            <p class="fw-bold fontSize">{{ program?.department?.name }}</p>
                         </div>
-                        <div class="ms-2">
+                        <div class="ms-2 sideMargin">
                             <p>Duration</p>
-                            <p class="fw-bold">{{ program?.course_duration }} year</p>
+                            <p class="fw-bold fontSize">{{ program?.course_duration }} year</p>
                         </div>
                     </div>
 
@@ -57,11 +57,11 @@
                         <div v-for="(tab, tabIndex) in tabs" :key="tabIndex" v-show="activeTab === tabIndex"
                             class="tab-pane active">
                             <h2 class="fw-bold">{{ tab.label }}</h2>
-                            <p v-if="tabIndex !== 3" v-html="tab.content"></p>
+                            <p class="ql-editor" v-if="tabIndex !== 3" v-html="tab.content"></p>
 
                             <div v-if="tabIndex === 3">
                                 <div class="row p-1 mt-3 ms-2">
-                                    <div class="col-md-5 cardFee m-3">
+                                    <div class="col-md-5 col-12 cardFee m-3">
                                         <h6 class="text-center mt-2 fw-bold">Yearly original fee</h6>
 
                                         <div v-if="tab.content.scholarship_id === 'free'">
@@ -99,7 +99,7 @@
                                     </div>
 
 
-                                    <div class="col-md-5 cardFeeOther m-3">
+                                    <div class="col-md-5 col-12 cardFeeOther m-3">
                                         <h6 class="text-center mt-2 fw-bold">After Scolarship fee</h6>
                                         <div style="margin-top: 3.5rem;" class="">
                                             <div class="d-flex justify-content-between">
@@ -125,11 +125,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-5 m-3">
+                                    <div class="col-md-5 col-12 m-3">
 
                                     </div>
 
-                                    <div class="col-md-5 cardFeeOther m-3">
+                                    <div class="col-md-5 col-12 cardFeeOther m-3">
                                         <h6 class="text-center mt-2 fw-bold">After Scolarship fee</h6>
                                         <div style="margin-top: 3.5rem;" class="">
                                             <div class="d-flex justify-content-between">
@@ -193,6 +193,7 @@
 import axios from 'axios';
 import { apiUrl, appUrl } from '../../../../globalVariables';
 import LatestUpdate from '../home/LatestUpdate.vue';
+import "quill/dist/quill.snow.css";
 
 export default {
     data() {
@@ -213,7 +214,9 @@ export default {
 
     methods: {
         applyButton(id) {
-            window.location.href = `${appUrl}apply-cart/${id}`;
+            console.log(id);
+            
+            window.location.href = `${appUrl}apply-admission/${id}`;
             // this.$router.push(`/apply-admission/${id}`);
         },
 
@@ -259,10 +262,31 @@ export default {
 
 
 <style scoped>
+@media (max-width: 400px) {
+    .pName {
+        font-size: 23px !important;
+    }
+    .sideMargin p{
+        line-height: 10px !important;
+    }
+}
 @media (max-width: 1247px) {
+    .mainHead{
+        margin-top: 60px !important;
+    }
     .topCard{
         display: flex !important;
         flex-direction: column;
+        gap: 0 !important;
+    }
+    .fontSize{
+        font-size: 11px;
+    }
+    .sideMargin{
+        margin-left: 2px !important;
+    }
+    .sideMargin p{
+        line-height: 9px;
     }
     .cardFee {
         width: 50% !important;
@@ -275,18 +299,22 @@ export default {
         position: relative;
         background-color: white;
         transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-        /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
         box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
         padding: 25px;
+        margin-left: 0px !important;
+    }
+    .cardFeeOther{
+        margin-left: 0px !important;
     }
 
     .info_container {
-        height: 660px !important;
+        height: 450px !important;
     }
 
     .info {
         display: flex !important;
         flex-direction: column;
+        gap: 0 !important;
     }
 
     .pName {

@@ -32,8 +32,8 @@
                     <img class="blog_image" :src="getImageUrl(blog)" alt="">
                 </div>
                 <div class="mt-4 des">
-                    <p v-if="isExpanded" v-html="blog.description ? blog.description : blog.about"></p>
-                    <p v-else v-html="shortDescription"></p>
+                    <p v-if="isExpanded" class="ql-editor" v-html="blog.description ? blog.description : blog.about"></p>
+                    <p v-else class="ql-editor" v-html="shortDescription"></p>
                     <div class="text-center">
                         <button class="see_more" @click="toggleDescription">
                             {{ isExpanded ? "See Less" : "See More" }}
@@ -66,6 +66,7 @@
 <script>
 import axios from "axios";
 import { apiUrl, appUrl } from "../../../../globalVariables";
+import "quill/dist/quill.snow.css";
 export default {
     data() {
         return {

@@ -1,5 +1,5 @@
 <template>
-    <!-- <Header /> -->
+    <Header />
 
     <div v-if="loading" class="loader-container">
         <div class="loader">
@@ -12,20 +12,25 @@
 
         <div class="search-section">
             <div class="search-container">
-                <div class="d-flex mt-2">
-                    <input type="text" v-model="searchQuery" placeholder="What do you want to study"
-                        class="search-input" />
-                    <i class="fas fa-search search-icon"></i>
-                </div>
                 <select class="search-dropdown search-dropdown-country" v-model="selectedCountry">
                     <option>Select Country</option>
                     <option v-for="(item, index) in countries" :key="index" :value="item.id">
+                        Study In {{ item.name }}
+                    </option>
+                </select>
+
+                <select class="search-dropdown search-dropdown-country" v-model="selectedUniversity">
+                    <option>Select University</option>
+                    <option v-for="(item, index) in filteredUniversities" :key="index" :value="item.id">
                         {{ item.name }}
                     </option>
                 </select>
+
                 <select class="search-dropdown search-dropdown-degree" v-model="selectedDegree">
-                    <option>Select Degree</option>
-                    <option v-for="(item, index) in degree" :key="index" :value="item.id">
+                    <option v-if="selectedUniversity === 'Select University'">Select University First</option>
+                    <option v-if="selectedUniversity !== 'Select University'">Select Degree</option>
+                    <option v-if="selectedUniversity !== 'Select University'" v-for="(item, index) in degree"
+                        :key="index" :value="item.id">
                         {{ item.name }}
                     </option>
                 </select>
@@ -36,7 +41,7 @@
         </div>
 
         <Categories :categories="categories" />
-        <FindUniversity :countries="countries" />
+        <FindUniversity :homeCountries="homeCountries" />
         <WorldClass :universities="universities" :program="program" />
         <CountSection :countData="countData" />
         <CourseSection :courses="courses" />
@@ -52,24 +57,29 @@ import { defineAsyncComponent } from 'vue';
 import axios from 'axios';
 import { apiUrl } from '../../../../globalVariables';
 import logo from "../../../../assets/image/logo.png";
+import Multiselect from '@vueform/multiselect';
+import '@vueform/multiselect/themes/default.css';
+
 
 export default {
     data() {
         return {
-            searchQuery: "",
-            selectedCountry: "Select Country",
-            selectedDegree: "Select Degree",
+            selectedCountry: 'Select Country',
+            selectedUniversity: "Select University",
+            selectedDegree: "Select University First",
             home: {},
             home_content: {},
             countries: [],
+            homeCountries: [],
             degree: [],
             categories: [],
+            homecontentlocation: [],
             countData: [],
-            countries: [],
             courses: [],
             universities: [],
+            all_universities: [],
+            filteredUniversities: [],
             latestUpdate: [],
-
             program: 0,
             loading: true,
             logo,
@@ -86,7 +96,11 @@ export default {
         CourseSection: defineAsyncComponent(() => import('./CourseSection.vue')),
         LatestUpdate: defineAsyncComponent(() => import('./LatestUpdate.vue')),
         ApplyUniversity: defineAsyncComponent(() => import('./ApplyUniversity.vue')),
+        Multiselect
     },
+
+
+
     async mounted() {
         try {
             await this.getHomeContent();
@@ -96,13 +110,33 @@ export default {
             this.loading = false;
         }
     },
+    watch: {
+        selectedCountry(newCountryId) {
+            if (newCountryId !== "Select Country") {
+                this.filteredUniversities = this.all_universities.filter(university => university.country_id === newCountryId);
+                this.selectedUniversity = "Select University"; // Reset university selection
+                this.selectedDegree = "Select University First"; // Reset degree selection
+            } else {
+                this.filteredUniversities = [];
+                this.selectedUniversity = "Select University";
+                this.selectedDegree = "Select University First";
+            }
+        },
+        selectedUniversity(newUniversityId) {
+            if (newUniversityId !== "Select University") {
+                this.selectedDegree = "Select Degree";
+            } else {
+                this.selectedDegree = "Select University First";
+            }
+        }
+    },
     methods: {
         handleSearch() {
             this.$router.push({
                 path: "/course",
                 query: {
-                    search: this.searchQuery,
                     country: this.selectedCountry,
+                    university: this.selectedUniversity,
                     degree: this.selectedDegree,
                 },
             });
@@ -116,14 +150,42 @@ export default {
             this.degree = response.data.data.degrees;
             this.countries = response.data.data.countries;
             this.categories = response.data.data.degrees;
-            this.countries = response.data.data.cities;
+            this.homecontentlocation = response.data.data?.homecontentlocations || [];
+
+            if (this.homecontentlocation.length === 0) {
+                console.warn("homecontentlocation is empty or not available.");
+            } else {
+
+                const filteredLocations = this.homecontentlocation.filter(homeLocation => {
+                    console.log("Checking homeLocation:", homeLocation);
+                    return homeLocation.type_loction_id == 2;
+                });
+
+
+                this.homeCountries = filteredLocations
+                    .map(homeLocation => {
+
+                        const matchedCountry = this.countries.find(country => {
+                            return country.id === homeLocation.location_id;
+                        });
+
+                        return matchedCountry;
+                    })
+                    .filter(Boolean);
+
+            }
+
+
+            // this.countries = response.data.data.cities;
             this.home_content = response.data.data.home_content;
 
             this.universities = response.data.data.university_list;
+            this.all_universities = response.data.data.universities;
             this.program = response.data.data.course;
 
             this.courses = response.data.data.courses_all;
             this.latestUpdate = response.data.data.latest_updates;
+            console.log(response.data.data);
 
 
             // Fetch countData
@@ -135,6 +197,7 @@ export default {
                 { num: this.parseNumber(rawData.count_num_4), text: rawData.count_text_4 }
             ];
         },
+
         parseNumber(value) {
             if (typeof value === "string") {
                 value = value.toLowerCase();
@@ -150,6 +213,7 @@ export default {
     },
 };
 </script>
+
 
 <style scoped>
 .search-icon {
@@ -209,72 +273,46 @@ export default {
     .search-container {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        background: #fff;
-        width: 85% !important;
+        padding-top: 10px !important;
     }
 
     .search-section {
         border-radius: 10px !important;
-        width: 300px !important;
         display: flex;
         flex-direction: column;
-        padding-bottom: 10px;
+        width: 90% !important;
+        height: 320px !important;
     }
 
     .search-dropdown {
-        flex: 1;
-        border: none !important;
-        padding: 10px;
-        outline: none;
-        font-size: 16px;
-        background-color: white;
-    }
-
-    .search-dropdown-degree {
-        margin-left: 28px !important;
-        width: 280px;
-    }
-
-    .search-dropdown-country {
-        margin-left: 28px !important;
-        width: 280px;
-    }
-
-    .search-input {
-        margin-right: 45px !important;
-    }
-
-    .search-button {
-        background-color: #824fa3;
-        color: #fff;
-        padding: 10px 10px !important;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        height: 52px !important;
-        width: 135px;
+        width: 90% !important;
     }
 
     .btn-center {
-        text-align: center;
+        margin-top: 2px !important;
     }
+
+}
+
+.btn-center {
+    text-align: center;
+    margin-top: 17px;
 }
 
 .search-section {
-    display: flex;
-    justify-content: center;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: -40px;
+    margin-top: -63px;
     z-index: 10;
     position: relative;
-    width: 85%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 2px;
+    border-radius: 5px;
     padding-left: 10px;
+    padding: 20px;
+    height: 240px;
+    border-bottom: 3px solid #824fa3;
 }
 
 .search-container {
@@ -282,6 +320,8 @@ export default {
     align-items: center;
     background: #fff;
     width: 95%;
+    padding-top: 30px;
+    margin: auto;
 }
 
 .search-input {
@@ -298,13 +338,15 @@ export default {
 
 .search-dropdown {
     flex: 1;
-    border: none;
-    padding: 10px;
+    border: 1px solid black;
+    padding: 13px;
     outline: none;
-    font-size: 16px;
+    font-size: 18px;
     background-color: white;
     border-left: 1px solid gray;
     margin: 10px;
+    width: 0px;
+    font-weight: 700;
 }
 
 .search-button {
@@ -313,10 +355,10 @@ export default {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 21px;
     cursor: pointer;
-    height: 72px;
-    width: 135px;
+    height: 55px;
+    width: 91%;
 }
 
 .search-button:hover {

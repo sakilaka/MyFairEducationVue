@@ -32,8 +32,8 @@
                     <img class="blog_image" :src="getImageUrl(blog.image)" alt="">
                 </div>
                 <div class="mt-4 des">
-                    <p v-if="isExpanded" v-html="blog.about"></p>
-                    <p v-else v-html="shortDescription"></p>
+                    <p class="ql-editor" v-if="isExpanded" v-html="blog.about"></p>
+                    <p class="ql-editor" v-else v-html="shortDescription"></p>
                     <div class="text-center">
                         <button class="see_more" @click="toggleDescription">
                             {{ isExpanded ? "See Less" : "See More" }}
@@ -65,6 +65,7 @@
 <script>
 import axios from "axios";
 import { apiUrl, appUrl } from "../../../../globalVariables";
+import "quill/dist/quill.snow.css";
 export default {
     data() {
         return {
@@ -192,6 +193,12 @@ export default {
     .recentBlog {
         padding: 0px !important;
     }
+
+    .blog-sidebar {
+        width: 350px !important;
+        /* height: 827px; */
+        margin: 0px auto;
+    }
 }
 
 .sideBlogImage {
@@ -304,7 +311,7 @@ img {
 
 .blog-sidebar {
     width: 400px;
-    height: 827px;
+    /* height: 827px; */
 }
 
 .first_side {

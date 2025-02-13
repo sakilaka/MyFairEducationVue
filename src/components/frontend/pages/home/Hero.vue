@@ -5,14 +5,15 @@
             <!-- For Photo Banner -->
             <swiper-slide v-if="home_content?.banner_type === 'photo'" v-for="(image, key) in bannerImages" :key="key">
                 <div class="image-container d-flex justify-content-start align-items-center"
-                    :style="{ backgroundImage: `url(${imagee})`, backgroundSize: 'cover' }">
+                    :style="{ backgroundImage: `url(${appUrl}${image['banner_image']})`, backgroundSize: 'cover' }">
                     <a :href="bannerImageUrls[key] || '#'" target="_blank" class="stretched-link"
                         style="display: block; height: 100%;"></a>
                     <div class="content mx-auto">
-                        <p class="banner-header">Education WordPress theme</p>
-                        <h1 class="banner-text">Build Your Dream with MayFair</h1>
+                        <p class="banner-header">{{ image['banner_short_text'] }}</p>
+                        <h1 class="banner-text">{{ image['banner_text'] }}</h1>
                         <div class="mt-2">
-                            <router-link to="/course"><button class="apply_btn">Apply Now</button></router-link>
+                            <router-link :to="image['button_url']"><button class="apply_btn">Apply
+                                    Now</button></router-link>
                         </div>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
 import axios from "axios";
-import { apiUrl } from "../../../../globalVariables";
+import { appUrl, apiUrl } from "../../../../globalVariables";
 import imagee from "../../../../assets/image/hero-3.jpg";
 
 export default {
@@ -45,6 +46,7 @@ export default {
     data() {
         return {
             imagee,
+            appUrl
             // home_content: {},
         };
     },
@@ -58,19 +60,23 @@ export default {
 
     computed: {
         bannerImages() {
-            const bannerImageData = this.home_content?.banner_image
-                ? JSON.parse(this.home_content.banner_image).images
+            const bannerImageData = this.home_content?.hero_content
+                ? JSON.parse(this.home_content.hero_content)
                 : {};
-            return bannerImageData;
+
+            const imageArray = Array.isArray(bannerImageData) ? bannerImageData : Object.values(bannerImageData);
+            return imageArray.reverse();
         },
 
 
         bannerImageUrls() {
             const bannerImageUrlData = this.home_content?.banner_image
                 ? JSON.parse(this.home_content.banner_image).image_url
-                : {};
-            return bannerImageUrlData;
+                : [];
+            console.log("Parsed banner image URLs:", bannerImageUrlData);  // Log to see the data
+            return Array.isArray(bannerImageUrlData) ? bannerImageUrlData : [];
         },
+
 
         // Computed property for the banner video
         bannerVideo() {
@@ -122,10 +128,10 @@ export default {
         width: 300px;
         margin-left: -47px;
     }
-    
+
     .banner-header {
         margin-left: -47px;
-        font-size: 1rem !important;
+        font-size: 0.7rem !important;
         text-align: left !important;
         /* display: none; */
     }
@@ -140,7 +146,8 @@ export default {
         margin-top: 5px;
         margin-left: -95px;
     }
-    .image-container{
+
+    .image-container {
         height: 591px !important;
     }
 }

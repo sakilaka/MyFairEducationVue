@@ -32,7 +32,7 @@
 
         <header :class="{ fixed: isScrolled }" class="header">
             <div class="logo">
-                <img @click="navigateHome()" :src="logo" alt="Logo" class="logo-img" />
+                <img @click="navigateHome()" :src="logo" alt="Logo" class="logo-img" style="cursor: pointer;"/>
             </div>
 
             <nav class="nav-links" :class="{ color: isScrolled }">
@@ -58,7 +58,6 @@
                             </router-link>
 
                             <!-- Submenu -->
-                            <!-- Submenu -->
                             <router-link class="dropdown-item dropdownA" @mouseenter="showSubmenu = true"
                                 @mouseleave="handleMouseLeave">
                                 Regional Offices
@@ -72,10 +71,7 @@
                                         </router-link>
                                         <div v-if="currentCountry === country" class="subsubmenu">
                                             <!-- Iterate over offices in the country -->
-                                            <!-- <router-link v-for="office in countryOffices" :key="office.id"
-                                                class="dropdown-item" @click="navigateToOffice(office.id)">
-                                                {{ office.name }}
-                                            </router-link> -->
+                                           
                                             <router-link v-for="office in countryOffices" :key="office.id"
                                                 class="dropdown-item" :to="`/office/${office.id}`"
                                                 @click.prevent="customLogicBeforeNavigation(office.id)">
@@ -181,17 +177,17 @@
 
                 <div class="d-flex mt-2">
                     <i class="fas fa-phone mt-1"></i>
-                    <p class="ms-2">436456895486</p>
+                    <p class="ms-2">+(372) 5870 0600</p>
                 </div>
 
                 <div class="d-flex">
                     <i class="fas fa-envelope fa-solid mt-1"></i>
-                    <p class="ms-2">info@datapollex.com</p>
+                    <p class="ms-2">info@mayfaireducation.global</p>
                 </div>
 
                 <div class="d-flex">
                     <i class="fas fa-location-dot mt-1"></i>
-                    <p class="ms-2">Kajir deuri,Chittagong</p>
+                    <p class="ms-2">Vindi 9-2, Kristiine, Tallinn 11315, Estonia.</p>
                 </div>
             </div>
 

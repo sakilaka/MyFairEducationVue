@@ -170,6 +170,12 @@ export default {
 
 
 <style scoped>
+@media (max-width: 400px) {
+    img{
+        width: 87% !important;
+        border-radius: 10px;
+    }
+}
 @media (max-width: 1100px) {
     .search_container {
         display: flex !important;
@@ -187,6 +193,7 @@ export default {
         border-radius: 10px;
         display: inline-block;
     }
+    
 
 
     .card__body p {

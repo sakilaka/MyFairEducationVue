@@ -146,7 +146,6 @@
                             </div>
                         </div>
 
-
                     </div>
 
                     <div v-else>
@@ -154,9 +153,11 @@
                     </div>
 
                     <div class="pagination">
-                        <button class="nextBtn" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">Previous</button>
+                        <button class="nextBtn" @click="changePage(currentPage - 1)"
+                            :disabled="currentPage === 1">Previous</button>
                         <span class="mt-2 fw-bold">Page {{ currentPage }} of {{ lastPage }}</span>
-                        <button class="preBtn" @click="changePage(currentPage + 1)" :disabled="currentPage === lastPage">Next</button>
+                        <button class="preBtn" @click="changePage(currentPage + 1)"
+                            :disabled="currentPage === lastPage">Next</button>
                     </div>
 
                 </div>
@@ -196,7 +197,7 @@ export default {
                 state: "",
                 city: "",
             },
-            searchQuery: "",
+            selectedUniversity: "",
             selectedCountry: "",
             selectedDegree: "",
             currentPage: 1,
@@ -223,29 +224,30 @@ export default {
 
         filteredPrograms() {
             return this.programs.filter((program) => {
-                const matchesSearchQuery =
-                    !this.searchQuery ||
-                    program.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-
+                // Match country
                 const matchesCountry =
                     !this.selectedCountry ||
                     program.university?.country_id == this.selectedCountry;
 
+                // Match university
+                const matchesUniversity =
+                    !this.selectedUniversity ||
+                    program.university_id == this.selectedUniversity;
+
+                // Match degree
                 const matchesDegree =
                     !this.selectedDegree ||
                     program.degree_id == this.selectedDegree;
 
-                return (
-                    matchesSearchQuery &&
-                    matchesCountry &&
-                    matchesDegree &&
+                // Return true only if all selected filters match
+                return matchesCountry && matchesUniversity && matchesDegree &&
                     (!this.selectedFilters.degree || program.degree_id === this.selectedFilters.degree) &&
                     (!this.selectedFilters.language || program.language_id === this.selectedFilters.language) &&
                     (!this.selectedFilters.intake || program.section_id === this.selectedFilters.intake) &&
                     (!this.selectedFilters.department || program.department_id === this.selectedFilters.department) &&
                     (!this.selectedFilters.university || program.university_id === this.selectedFilters.university) &&
-                    (!this.selectedFilters.city || program.university?.city_id === this.selectedFilters.city)
-                );
+                    (!this.selectedFilters.city || program.university?.city_id === this.selectedFilters.city) &&
+                    (!this.selectedFilters.city || program.university?.city_id === this.selectedFilters.city);
             });
         },
     },
@@ -256,39 +258,18 @@ export default {
     },
 
     methods: {
+        applyButton(id) {
+
+        window.location.href = `${appUrl}apply-admission/${id}`;
+        // this.$router.push(`/apply-admission/${id}`);
+        },
         readRouteParams() {
-            const { search, country, degree } = this.$route.query;
-            this.searchQuery = search || "";
+            const { country, university, degree } = this.$route.query;
             this.selectedCountry = country || "";
+            this.selectedUniversity = university || "";
             this.selectedDegree = degree || "";
-            // console.log(this.selectedDegree);
-
         },
 
-        async getCourseList() {
-            try {
-                this.loading = true;
-                const token = localStorage.getItem("token");
-                const response = await axios.get(`${apiUrl}course_list`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                this.programs = response.data.courses.data;
-                this.degrees = response.data.degrees;
-                this.languages = response.data.languages;
-                this.departments = response.data.departments;
-                this.universities = response.data.universities;
-                this.sections = response.data.sections;
-                this.states = response.data.states;
-                this.cities = response.data.cities;
-                console.log(response.data);
-            } catch (error) {
-                console.error("Error fetching configurations:", error);
-            } finally {
-                this.loading = false;
-            }
-        },
         async getCourseList(page = 1) {
             try {
                 this.loading = true;
@@ -306,6 +287,8 @@ export default {
                 this.sections = response.data.sections;
                 this.states = response.data.states;
                 this.cities = response.data.cities;
+                console.log(response.data);
+
                 this.currentPage = response.data.courses.current_page;
                 this.lastPage = response.data.courses.last_page;
             } catch (error) {
@@ -315,10 +298,6 @@ export default {
             }
         },
 
-        changePage(page) {
-            this.getCourseList(page);
-        },
-
         getImageUrl(item) {
             return `${appUrl}upload/university/${item}`;
         },
@@ -326,16 +305,21 @@ export default {
         navigateToCourse(courseId) {
             this.$router.push({ path: `/course/${courseId}` });
         },
+
+        changePage(page) {
+            this.getCourseList(page);
+        },
     },
 };
 </script>
 
 <style scoped>
-.pagination{
+.pagination {
     margin-left: 73px;
     margin-top: 10px;
 }
-.nextBtn{
+
+.nextBtn {
     background-color: #824fa3;
     color: white;
     border: none;
@@ -343,7 +327,8 @@ export default {
     padding: 5px 20px;
     margin-right: 20px;
 }
-.preBtn{
+
+.preBtn {
     background-color: #824fa3;
     color: white;
     border: none;
@@ -444,10 +429,9 @@ export default {
     margin-top: 30px;
 }
 
-@media (max-width: 361px) {
+@media (max-width: 400px) {
     .cards-section {
         gap: 25px !important;
-        margin-left: -7px !important;
     }
 }
 
@@ -469,14 +453,18 @@ export default {
         padding: 15px !important;
         background: #fff !important;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
-        width: 350px !important;
+        width: 340px !important;
         height: 650px !important;
         margin-left: 1px !important;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
+    .pagination {
+        margin-left: 20px !important;
+    }
+
     .university_image {
-        width: 349px;
+        width: 339px;
         height: 260px;
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="" style="margin-top: 110px;">
+    <div class="mainHead" style="margin-top: 110px;">
         <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
@@ -32,8 +32,8 @@
                     <img class="blog_image" :src="getImageUrl(blog.image)" alt="">
                 </div>
                 <div class="mt-4 des">
-                    <p v-if="isExpanded" v-html="blog.description"></p>
-                    <p v-else v-html="shortDescription"></p>
+                    <p class="ql-editor" v-if="isExpanded" v-html="blog.description"></p>
+                    <p class="ql-editor" v-else v-html="shortDescription"></p>
                     <div class="text-center">
                         <button class="see_more" @click="toggleDescription">
                             {{ isExpanded ? "See Less" : "See More" }}
@@ -109,6 +109,7 @@
 <script>
 import axios from "axios";
 import { apiUrl, appUrl } from "../../../../globalVariables";
+import "quill/dist/quill.snow.css";
 export default {
     data() {
         return {
@@ -181,10 +182,27 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 400px) {
+    .image-container {
+        width: 263px !important;
+        height: 220px !important;
+        overflow: hidden;
+        border-radius: 10px;
+        display: inline-block;
+        margin-left: -3px !important;
+    }
+}
 @media (max-width: 1100px) {
+    .mainHead{
+        margin-top: 60px !important;
+    }
     .blogDetails {
         display: flex !important;
         flex-direction: column;
+    }
+    .blog-sidebar{
+        width: 350px !important;
+        margin: 0px auto;
     }
 
     .blog-content {
@@ -197,10 +215,11 @@ export default {
 
     .image-container {
         width: 263px !important;
-        height: 290px;
+        height: 220px !important;
         overflow: hidden;
         border-radius: 10px;
         display: inline-block;
+        margin-left: 7px;
     }
 
     .subtitle {
@@ -328,7 +347,7 @@ img {
 
 .blog-sidebar {
     width: 400px;
-    height: 827px;
+    /* height: 827px; */
 }
 
 .first_side {

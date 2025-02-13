@@ -51,7 +51,7 @@
                 <div class="col-md-6 map">
                     <!-- Google Map Embed -->
                     <div id="map" style="height: 435px; border-radius: 10px; overflow: hidden;">
-                        <p v-html="office.map_link"></p>
+                        <p class="ql-editor" v-html="office.map_link"></p>
                     </div>
                 </div>
 
@@ -64,6 +64,7 @@
 <script>
 import axios from 'axios';
 import { apiUrl } from '../../../../globalVariables';
+import "quill/dist/quill.snow.css";
 
 export default {
     data() {

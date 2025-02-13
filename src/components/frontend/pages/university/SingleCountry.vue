@@ -44,12 +44,32 @@
 
             <div class="col-md-9">
                 <p class="my-2 ms-2">{{ filteredUniversities.length }} total university found.</p>
-                <div @click="singleUniversity(item.id)" v-for="(item, index) in filteredUniversities" :key="index"
+                <!-- <div @click="singleUniversity(item.id)" v-for="(item, index) in filteredUniversities" :key="index"
                     class="card_university">
                     <div class="text-center">
                         <img :src="getImageUrl(item.image)" class="card_image" alt="Country Image" />
                     </div>
                     <p class="text-center my-3">{{ item.name }}</p>
+                </div> -->
+                <div class="row justify-content-center card-row">
+                    <!-- Card Container -->
+                    <div v-for="(item, index) in filteredUniversities" :key="index" class="card_university col-md-3 col-12">
+                        <div class="card_content">
+                            <img :src="getImageUrl(item.banner_image)" class="card_image" alt="Country Image" />
+                            <img :src="getImageUrl(item.image)" class="logo_image" alt="" />
+                            <div class="card_content_text">
+                                <p class="mt-2">{{ item.course_count }} programs</p>
+                                <h5 style="font-size: 17px" class="mt-2 fw-bold">{{ item.name }}</h5>
+                                <p style="font-size: 14px" class="mt-4">{{ item.address }}</p>
+                            </div>
+                        </div>
+                        <div class="card_hover_content">
+                            <h4 class="fw-bold mb-5 fs-5">{{ item.name || "Explore" }}</h4>
+                            <router-link :to="{ path: `/university/${item.id}` }">
+                                <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+                            </router-link>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -159,7 +179,7 @@ export default {
 }
 
 @media (max-width: 1247px) {
-    .card_university {
+    /* .card_university {
         width: 100% !important;
         margin: 10px;
         border-radius: 5px;
@@ -170,13 +190,45 @@ export default {
         position: relative;
         background-color: white;
         transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-        /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
+        box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
+    } */
+
+    .card_university {
+        width: 300px !important;
+        margin: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: top;
+        height: 300px;
+        position: relative;
+        background-color: white;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
         box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
     }
 
 }
 
 .card_university {
+    width: 18%;
+    margin: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    height: 300px;
+    position: relative;
+    background-color: white;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
+}
+
+.card_university:hover {
+    background-color: #f39c12;
+    color: #ffffff;
+}
+
+/* .card_university {
     width: 23%;
     margin: 10px;
     border-radius: 5px;
@@ -187,9 +239,8 @@ export default {
     position: relative;
     background-color: white;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    /* box-shadow: 1px 2px 1px rgb(235, 233, 233); */
     box-shadow: 0px 0px 40px rgba(29, 23, 77, 0.06);
-}
+} */
 
 
 
@@ -200,5 +251,77 @@ export default {
     background-color: #ffffff;
     padding: 3px;
     margin-top: 10px;
+}
+.card_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    opacity: 1;
+}
+
+.card_university:hover .card_content {
+    opacity: 0;
+}
+
+.card_hover_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #ffffff;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card_university:hover .card_hover_content {
+    opacity: 1;
+}
+
+.card_hover_content .icon {
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.card_image {
+    width: 238px;
+    height: 125px;
+    margin: auto;
+    margin-top: -21px;
+}
+
+.logo_image {
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    margin-top: -21px;
+    background-color: #ffffff;
+    padding: 3px;
+}
+
+.card_info {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.card_info p {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.fa-chevron-right {
+    color: #333;
 }
 </style>

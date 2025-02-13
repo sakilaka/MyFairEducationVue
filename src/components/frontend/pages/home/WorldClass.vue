@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h2 class="text-center mb-4 fw-bold title" style="margin-top: 70px; font-size: 30px;">
-            Discover Wor<span class="borderStyle">ld cla</span>ss universities
+            Discover Wor<span class="borderStyle">ld Cla</span>ss Universities
         </h2>
         <div class="row justify-content-center card-row">
             <!-- Card Container -->
@@ -11,14 +11,14 @@
                     <img :src="getImageUrl(item.image)" class="logo_image" alt="" />
                     <div class="card_content_text">
                         <p class="mt-2">{{ item.course_count }} programs</p>
-                        <h5 style="font-size: 17px" class="mt-2 fw-bold">{{ item.name }}</h5>
-                        <p style="font-size: 14px" class="mt-4">{{ item.address }}</p>
+                        <h5 style="font-size: 17px" class="mt-1 fw-bold">{{ item.name }}</h5>
+                        <p style="font-size: 14px" class="mt-2">{{ item.address }}</p>
                     </div>
                 </div>
                 <div class="card_hover_content">
                     <h4 class="fw-bold mb-5">{{ item.name || "Explore" }}</h4>
                     <router-link :to="{ path: `/university/${item.id}` }">
-                        <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div style="cursor: pointer;" class="icon"><i class="fa-solid fa-arrow-right"></i></div>
                     </router-link>
                 </div>
             </div>
@@ -119,7 +119,7 @@ export default {
         overflow: hidden;
         display: inline-block;
         vertical-align: top;
-        height: 300px;
+        height: 290px;
         position: relative;
         background-color: white;
         transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
@@ -212,10 +212,10 @@ export default {
 }
 
 .logo_image {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     margin: auto;
-    margin-top: -21px;
+    margin-top: -27px;
     background-color: #ffffff;
     padding: 3px;
 }

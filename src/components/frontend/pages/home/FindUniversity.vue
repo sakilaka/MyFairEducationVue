@@ -5,7 +5,7 @@
             Find Univer<span class="borderStyle">sities</span> By Country
         </h1>
         <div class="row justify-content-center">
-            <div v-for="(item, index) in countries.slice(0, 12)" :key="index" @click="handleCountryClick(item.id)" class="card_country shadow-md">
+            <div style="cursor: pointer;" v-for="(item, index) in homeCountries.slice(0, 12)" :key="index" @click="handleCountryClick(item.id)" class="card_country shadow-md">
                 <div class="card_content">
                     <img :src="getImageUrl(item.image)" class="card_image" alt="Country Image">
                     <hr class="w-100 m-0">
@@ -40,7 +40,7 @@ export default {
     },
 
     props: {
-        countries: {
+        homeCountries: {
             type: Array,
             required: true,
         },
@@ -76,7 +76,7 @@ export default {
         },
 
         getImageUrl(item){
-            return `${appUrl}upload/cities/${item}`;
+            return `${appUrl}upload/countries/${item}`;
         }
 
         
@@ -92,7 +92,7 @@ export default {
         width: 90% !important;
     }
     .card_image{
-        width: 100% !important;
+        width: 110% !important;
     }
     .title{
         font-size: 20px !important;

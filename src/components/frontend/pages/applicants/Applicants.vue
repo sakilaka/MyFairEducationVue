@@ -78,7 +78,7 @@
             </div>
 
             <!--Start Brand Logo-->
-            <div class="brand-logo-content bg-alice-blue py-5">
+            <!-- <div class="brand-logo-content bg-alice-blue py-5">
                 <div class="container-lg">
                     <div class="text-center mb-5">
                         <h3 class="fw-bold mb-0" style="color: var(--text_color)">Featured In</h3>
@@ -92,7 +92,7 @@
                         </swiper-slide>
                     </swiper>
                 </div>
-            </div>
+            </div> -->
             <!--End Brand Logo-->
 
 

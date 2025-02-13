@@ -32,13 +32,13 @@
     <div class="row gx-3 gy-4 mt-2 mx-auto">
       <div v-if="filteredCourses.length > 0" v-for="(item, index) in filteredCourses" :key="index" style=""
         class="col-12 col-md-6 col-lg-4 col-auto mt-sm-3 mt-md-4">
-        <div @click="handleClick(item.id)" class="single-course">
+        <div @click="handleClick(item.id)" class="single-course" style="cursor: pointer;">
           <div>
             <img class="card_img" :src="getImageUrl(item?.university?.banner_image)" alt="" />
           </div>
 
           <div class="badge_s">
-            <p class="badge bg-info">{{ item?.department?.name }}</p>
+            <p class="badge bg-info">{{ truncateText(item?.department?.name, 30) }}</p>
             <p class="badge bg-primary ms-2">{{ item?.degree?.name }}</p>
           </div>
 
@@ -156,7 +156,7 @@ export default {
 
     applyButton(id) {
 
-      window.location.href = `${appUrl}apply-cart/${id}`;
+      window.location.href = `${appUrl}apply-admission/${id}`;
       // this.$router.push(`/apply-admission/${id}`);
     },
 
@@ -190,6 +190,9 @@ export default {
 
 <style scoped>
 @media (max-width: 1247px) {
+.single-course{
+  width: 310px!important;
+}
   .searchTitle {
     width: 106px;
     height: 20px;

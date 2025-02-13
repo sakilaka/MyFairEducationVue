@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-top: 110px;">
+    <div style="margin-top: 110px;" class="mainHead">
         <div class="inner_section">
             <div class="containerBlog">
                 <router-link to="/">
@@ -184,7 +184,16 @@ export default {
 
 
 <style scoped>
+@media (max-width: 400px) {
+    img{
+        width: 87% !important;
+        border-radius: 10px;
+    }
+}
 @media (max-width: 1100px) {
+    .mainHead{
+        margin-top: 60px !important;
+    }
     .search_container {
         display: flex !important;
         flex-direction: column;

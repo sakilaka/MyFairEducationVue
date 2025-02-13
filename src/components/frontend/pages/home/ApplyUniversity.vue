@@ -13,8 +13,13 @@
             <div class="col-12 col-md-4 mb-sm-5 mb-md-0 uni-apply-card">
                 <div class="pt-5 pb-3 px-lg-4">
                     <div class="row text-center">
-                        <div class="col-3 mx-auto uni-apply-icon-container">
-                            <div class="icon-wrapper">
+                        <!-- <div class="col-4 col-md-3 mx-auto uni-apply-icon-container">
+                            <div class="">
+                                <i class="far fa-file-alt icon-wrapper" aria-hidden="true"></i>
+                            </div>
+                        </div> -->
+                        <div class="d-flex justify-content-center uni-apply-step-icon-container">
+                            <div class="uni-apply-step-icon">
                                 <i class="far fa-file-alt" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -34,8 +39,13 @@
             <div class="col-12 col-md-4 mb-sm-5 mb-md-0 uni-apply-card">
                 <div class="pt-5 pb-3 px-4">
                     <div class="row text-center">
-                        <div class="col-3 mx-auto uni-apply-icon-container">
-                            <div class="icon-wrapper">
+                        <!-- <div class="col-4 col-md-3 mx-auto uni-apply-icon-container">
+                            <div class="">
+                                <i class="fas fa-file-upload icon-wrapper" aria-hidden="true"></i>
+                            </div>
+                        </div> -->
+                        <div class="d-flex justify-content-center uni-apply-step-icon-container">
+                            <div class="uni-apply-step-icon">
                                 <i class="fas fa-file-upload" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -55,8 +65,14 @@
             <div class="col-12 col-md-4 mb-sm-5 mb-md-0 uni-apply-card">
                 <div class="pt-5 pb-3 px-4">
                     <div class="row text-center">
-                        <div class="col-3 mx-auto uni-apply-icon-container">
-                            <div class="icon-wrapper">
+                        <!-- <div class="col-4 col-md-3 mx-auto uni-apply-icon-container">
+                            <div class="">
+                                <i class="fas fa-star icon-wrapper" aria-hidden="true"></i>
+                            </div>
+                        </div> -->
+
+                        <div class="d-flex justify-content-center uni-apply-step-icon-container">
+                            <div class="uni-apply-step-icon">
                                 <i class="fas fa-star" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -130,8 +146,8 @@
     padding: 20px;
 }
 
-@media screen and (min-width:768px) {
-    .uni-apply-card:not(:last-child)::after {
+@media screen and (min-width:768px) and (max-width: 1100px) {
+    /* .uni-apply-card:not(:last-child)::after {
         content: "";
         position: absolute;
         top: 50%;
@@ -140,21 +156,37 @@
         height: 10%;
         background-color: white;
         transform: translateY(-300%) rotate(90deg);
-    }
+    } */
+
+
+    .uni-apply-icon-container {
+    width: 120px;
+    height: 70px !important; 
+    border-radius: 50%;
+    border: 1px solid white;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon-wrapper{
+    font-size: 30px !important;
+}
+
 }
 
 @media screen and (min-width:992px) {
-    .uni-apply-card:not(:last-child)::after {
+    /* .uni-apply-card:not(:last-child)::after {
         right: -10px;
         height: 20%;
         transform: translateY(-160%) rotate(90deg);
-    }
+    } */
 }
 
 @media screen and (min-width:1200px) {
-    .uni-apply-card:not(:last-child)::after {
+    /* .uni-apply-card:not(:last-child)::after {
         transform: translateY(-150%) rotate(90deg);
-    }
+    } */
 }
 
 .uni-apply-cards-container .uni-apply-card {
@@ -163,36 +195,38 @@
 }
 
 .uni-apply-icon-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 120px;
-    height: 105px;
+    height: 120px; /* Make height equal to width */
     border-radius: 50%;
     border: 1px solid white;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .icon-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
-    padding: 60px;
-    width: 100%;
-    height: 100%;
+    /* background-color: white; */
+    width: 120px; /* Adjust width */
+    height: 120px; /* Adjust height */
     border-radius: 50%;
     transition: 0.4s;
+    font-size: 48px;
+    line-height: 1;
 }
 
 .uni-apply-cards-container .uni-apply-card:hover .uni-apply-icon-container .icon-wrapper {
     scale: 0.85;
 }
 
-.icon-wrapper i {
-    font-size: 48px;
-    line-height: 1;
-}
+/* .uni-apply-cards-container .uni-apply-card:hover .uni-apply-step-icon i {
+    scale: 0.85;
+} */
+
+
 
 
 .uni-apply-cards-container .uni-apply-card .icon-wrapper i {
@@ -211,6 +245,22 @@
     max-width: clamp(2.5rem, 2.3888rem + 0.6135vw, 3.125rem);
     height: clamp(2.5rem, 2.3888rem + 0.6135vw, 3.125rem);
     font-size: clamp(1rem, 0.9555rem + 0.2454vw, 1.25rem);
+    background-color: white;
+    color: #824fa3 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    margin: auto;
+    font-weight: 500;
+}
+
+.uni-apply-container .uni-apply-card .uni-apply-step-icon-container .uni-apply-step-icon {
+    width: 120px;
+    /* max-width: clamp(2.5rem, 2.3888rem + 0.6135vw, 3.125rem); */
+    height: 120px;
+    font-size: 48px;
     background-color: white;
     color: #824fa3 !important;
     display: flex;
