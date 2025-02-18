@@ -60,56 +60,61 @@
             <div class="service-card-section">
                 <div class="service-card">
                     <div class="text-center mt-3">
-                        <img class="card_img" :src="passport" alt="">
-                        <h6 class="mt-3 fw-bold">Visa Assistance</h6>
-                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Visa stress got you down? Mayfair
-                            simplifies the process! We handle your
-                            entire student visa application, so you can focus on studying.</p>
+                        <!-- <img class="card_img" :src="passport" alt=""> -->
+                        <i class="fa-solid fa-users service_icon"></i>
+                        <h6 class="mt-3 fw-bold">Free Counselling</h6>
+                        <p style="font-size: 13px; padding: 5px;" class="mt-3">We provide free counselling  to our
+                         respective students by our expert counsellors 
+                        who are graduated from UK Universities</p>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="text-center mt-3">
-                        <img class="card_img" :src="passport" alt="">
-                        <h6 class="mt-3 fw-bold">Visa Assistance</h6>
-                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Visa stress got you down? Mayfair
-                            simplifies the process! We handle your
-                            entire student visa application, so you can focus on studying.</p>
+                        <!-- <img class="card_img" :src="passport" alt=""> -->
+                        <i class="fa-solid fa-bank service_icon"></i>
+                        <h6 class="mt-3 fw-bold">Student Admission Services</h6>
+                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Our admission services are mainly structured
+                         for international and
+                         EU students but we also offer admission services to the home students with limited options.</p>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="text-center mt-3">
-                        <img class="card_img" :src="passport" alt="">
-                        <h6 class="mt-3 fw-bold">Visa Assistance</h6>
-                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Visa stress got you down? Mayfair
-                            simplifies the process! We handle your
-                            entire student visa application, so you can focus on studying.</p>
+                        <!-- <img class="card_img" :src="passport" alt=""> -->
+                        <i class="fa-regular fa-gem service_icon"></i>
+                        <h6 class="mt-3 fw-bold">Compliance Assistance</h6>
+                        <p style="font-size: 13px; padding: 5px;" class="mt-3">We have dedicated compliance team to guide
+                         our students through visa processing..</p>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="text-center mt-3">
-                        <img class="card_img" :src="passport" alt="">
-                        <h6 class="mt-3 fw-bold">Visa Assistance</h6>
-                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Visa stress got you down? Mayfair
-                            simplifies the process! We handle your
-                            entire student visa application, so you can focus on studying.</p>
+                        <!-- <img class="card_img" :src="passport" alt=""> -->
+                        <i class="fa-solid fa-bed service_icon"></i>
+                        <h6 class="mt-3 fw-bold">Student Accommodation Services</h6>
+                        <p style="font-size: 13px; padding: 5px;" class="mt-3">AHZ  is proud to announce its partnership 
+                        with Casita who provides excellent student 
+                        accommodation services at a reasonable price.</p>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="text-center mt-3">
-                        <img class="card_img" :src="passport" alt="">
-                        <h6 class="mt-3 fw-bold">Visa Assistance</h6>
-                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Visa stress got you down? Mayfair
-                            simplifies the process! We handle your
-                            entire student visa application, so you can focus on studying.</p>
+                        <!-- <img class="card_img" :src="passport" alt=""> -->
+                        <i class="fa-solid fa-handshake service_icon"></i>
+                        <h6 class="mt-3 fw-bold">Partner University Services</h6>
+                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Our service is not limited to the 
+                         students only but also we provide a number of services for the
+                         universities that we are associated with.</p>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="text-center mt-3">
-                        <img class="card_img" :src="passport" alt="">
-                        <h6 class="mt-3 fw-bold">Visa Assistance</h6>
-                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Visa stress got you down? Mayfair
-                            simplifies the process! We handle your
-                            entire student visa application, so you can focus on studying.</p>
+                        <!-- <img class="card_img" :src="passport" alt=""> -->
+                        <i class="fa-solid fa-people-arrows service_icon"></i>
+                        <h6 class="mt-3 fw-bold">End-to-End Services</h6>
+                        <p style="font-size: 13px; padding: 5px;" class="mt-3">Our services are open and never
+                         ends at a certain point. We will ensure that the services and help will be continued even after
+                         completion of course in the UK if needed.</p>
                     </div>
                 </div>
 
@@ -301,7 +306,9 @@ export default {
             TestUser,
             activeTab: 'about',
             testimonials: [],
+            cards: [],
             about: {},
+
         }
     },
     components: {
@@ -311,6 +318,7 @@ export default {
     mounted() {
         this.getTestimonial();
         this.getAboutBanner();
+        this.getAboutCard();
     },
 
 
@@ -341,6 +349,23 @@ export default {
                     },
                 });
                 this.about = response.data.data.about;
+                console.log(response.data.data);
+            } catch (error) {
+                console.error('Error fetching configurations:', error);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async getAboutCard() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${apiUrl}about-us-card`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                this.cards = response.data.data.cards;
                 console.log(response.data.data);
             } catch (error) {
                 console.error('Error fetching configurations:', error);
@@ -392,9 +417,7 @@ export default {
     .tabs span{
         font-size: 15px !important;
     }
-    .service-card{
-        width: 320px !important;
-    }
+  
     .profile{
         width: 100% !important;
         height: 200px !important;
@@ -767,7 +790,21 @@ export default {
 
 .card_img {
     width: 80px;
+    margin-top: 15px;
 }
+.service-card h6,
+.service-card p {
+    position: relative;
+    z-index: 1;
+    margin: 15px 0;
+    transition: color 0.3s ease;
+}
+
+.service-card:hover h6,
+.service-card:hover p {
+    color: white;
+}
+
 
 .service-card {
     width: 250px;
@@ -776,7 +813,7 @@ export default {
     overflow: hidden;
     display: inline-block;
     vertical-align: top;
-    height: 260px;
+    height: 265px;
     position: relative;
     background-color: white;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
@@ -801,33 +838,67 @@ export default {
 
 .service-card:hover::before {
     left: 0;
-}
+} 
 
 .service-card:hover {
     color: white;
     transform: scale(1.05);
 }
-
-.service-card h6,
-.service-card p {
-    position: relative;
-    z-index: 1;
-    margin: 15px 0;
-    transition: color 0.3s ease;
-}
-
-.service-card:hover h6,
-.service-card:hover p {
-    color: white;
-}
-
-
 .service-card-section {
     display: flex;
     flex-wrap: wrap;
     gap: 40px 20px;
     margin-top: 40px;
 }
+
+/* .service-card h6 {
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+    text-align: left;
+    font-size: 22px;
+    color: #824fa3;
+    font-weight: 700;
+} */
+
+.service_icon{
+    font-size: 27px;
+    background-color: #824fa3;
+    color: white;
+    padding: 19px 17px;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+/* .service-card p{
+    text-align: justify;
+    font-size: 18px;
+    padding: 2px;
+    line-height: 26px;
+} */
+
+/* .service-card:hover .service_icon{
+    background-color: #f39c12;
+    animation: glowEffect 1s ease-out forwards;
+}
+
+.service-card:hover h6{
+    color: #f39c12;
+}
+
+@keyframes glowEffect {
+    0% {
+        box-shadow: 0 0 10px 5px rgba(245, 176, 65, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 15px 10px rgba(243, 156, 18, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+    }
+} */
+
+
 
 .service-title {
     font-weight: 700;

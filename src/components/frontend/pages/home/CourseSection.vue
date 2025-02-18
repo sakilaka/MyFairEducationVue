@@ -1,5 +1,5 @@
 <template>
-  <div class="container course_section">
+  <div class="course_section">
     <div class="d-flex justify-content-between display_small">
       <h2 class="fw-bold heading">Popular <span class="borderStyle">Courses</span></h2>
 
@@ -55,7 +55,7 @@
             </div>
 
             <h5 style="height: 50px; font-size: 18px" class="mt-2 fw-bold">
-              {{ truncateText(item.name, 20) }}
+              {{ (item.name) }}
             </h5>
 
             <div class="">
@@ -155,7 +155,6 @@ export default {
     },
 
     applyButton(id) {
-
       window.location.href = `${appUrl}apply-admission/${id}`;
       // this.$router.push(`/apply-admission/${id}`);
     },
@@ -268,6 +267,9 @@ export default {
 
 .course_section {
   margin-top: 70px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card_img {

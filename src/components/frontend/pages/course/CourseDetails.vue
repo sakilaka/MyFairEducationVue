@@ -100,32 +100,73 @@
 
 
                                     <div class="col-md-5 col-12 cardFeeOther m-3">
-                                        <h6 class="text-center mt-2 fw-bold">After Scolarship fee</h6>
-                                        <div style="margin-top: 3.5rem;" class="">
-                                            <div class="d-flex justify-content-between">
-                                                <p>Tution fee :</p>
-                                                <p class="fw-bold">$300000</p>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <p>Accommodation Fee :</p>
-                                                <p class="fw-bold">$300000</p>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <p>Insurance Fee :</p>
-                                                <p class="fw-bold">$300000</p>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <p>Visa Extension :</p>
-                                                <p class="fw-bold">$300000</p>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <p>Medical In China :</p>
-                                                <p class="fw-bold">$300000</p>
-                                            </div>
+                                        <h6 class="text-center mt-2 fw-bold">After Scholarship Fee</h6>
+
+                                        <div v-if="tab.content.scholarship_id !== 'free'">
+                                            <template v-if="tab.content.scholarship">
+                                                <p class="text-center text-primary fw-bold">
+                                                    {{ tab.content.scholarship.title }}
+                                                </p>
+
+                                                <div style="margin-top: 1.5rem;">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Tuition Fee:</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatFee(tab.content.year_fee -
+                                                                (tab.content.scholarship.tuition_fee ?? 0)) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Accommodation Fee:</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatFee(tab.content.accommodation_fee -
+                                                                (tab.content.scholarship.accommodation_fee ?? 0)) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Insurance Fee:</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatFee(tab.content.insurance_fee -
+                                                                (tab.content.scholarship.insurance_fee ?? 0)) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Visa Extension:</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatFee(tab.content.visa_extension_fee) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Medical In China:</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatFee(tab.content.medical_in_china_fee) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Stipend (Monthly):</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatStipend(tab.content.scholarship.stipend_monthly) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>Stipend (Yearly):</p>
+                                                        <p class="fw-bold">
+                                                            {{ formatStipend(tab.content.scholarship.stipend_yearly) }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </template>
+
+                                            <template v-else>
+                                                <div class="text-center text-danger fw-bold mt-3">No Scholarship
+                                                    Available</div>
+                                            </template>
                                         </div>
+
                                     </div>
 
-                                    <div class="col-md-5 col-12 m-3">
+
+                                    <!-- <div class="col-md-5 col-12 m-3">
 
                                     </div>
 
@@ -153,7 +194,7 @@
                                                 <p class="fw-bold">$300000</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </div>
@@ -213,9 +254,22 @@ export default {
     },
 
     methods: {
+        formatFee(originalFee, scholarshipAmount = 0) {
+            if (originalFee == null || scholarshipAmount == null) {
+                return 'Not Available';
+            }
+            const remainingFee = originalFee - (scholarshipAmount ?? 0);
+            return remainingFee <= 0 ? 'Free' : `$${Number(remainingFee).toLocaleString()}`;
+        },
+        formatStipend(amount) {
+            if (amount == null) {
+                return 'Not Available';
+            }
+            return amount === 1 || amount === 'Free' ? 'Free' : `$${Number(amount).toLocaleString()}`;
+        },
         applyButton(id) {
             console.log(id);
-            
+
             window.location.href = `${appUrl}apply-admission/${id}`;
             // this.$router.push(`/apply-admission/${id}`);
         },
@@ -266,28 +320,35 @@ export default {
     .pName {
         font-size: 23px !important;
     }
-    .sideMargin p{
+
+    .sideMargin p {
         line-height: 10px !important;
     }
 }
+
 @media (max-width: 1247px) {
-    .mainHead{
+    .mainHead {
         margin-top: 60px !important;
     }
-    .topCard{
+
+    .topCard {
         display: flex !important;
         flex-direction: column;
         gap: 0 !important;
     }
-    .fontSize{
+
+    .fontSize {
         font-size: 11px;
     }
-    .sideMargin{
+
+    .sideMargin {
         margin-left: 2px !important;
     }
-    .sideMargin p{
+
+    .sideMargin p {
         line-height: 9px;
     }
+
     .cardFee {
         width: 50% !important;
         margin: 10px;
@@ -303,7 +364,8 @@ export default {
         padding: 25px;
         margin-left: 0px !important;
     }
-    .cardFeeOther{
+
+    .cardFeeOther {
         margin-left: 0px !important;
     }
 
@@ -337,7 +399,8 @@ export default {
     .nav-tabs .nav-item {
         width: 100%;
     }
-    .btn_Apply{
+
+    .btn_Apply {
         padding: 10px 20px !important;
         font-size: 14px;
     }

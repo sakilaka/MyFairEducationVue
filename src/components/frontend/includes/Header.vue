@@ -40,15 +40,12 @@
                     <router-link to="/" exact-active-class="active-nav" exact>Home</router-link>
                     <router-link to="/course" active-class="active-nav">Courses</router-link>
                     <router-link to="/choose-country" active-class="active-nav">Choose Country</router-link>
-                    <router-link to="/applicant" active-class="active-nav">Applicants</router-link>
+                    <router-link to="/applicant" active-class="active-nav">Insurance</router-link>
                     <router-link to="/blog" active-class="active-nav">Blog</router-link>
                     <router-link to="/event" active-class="active-nav">Event</router-link>
                     <router-link to="/about" active-class="active-nav">About</router-link>
 
-                    <!-- Dropdown Menu -->
-
-
-                    <router-link class="dropdown dropdownA" @mouseenter="showContactDropdown = true"
+                    <div class="dropdown dropdownA contact" @mouseenter="showContactDropdown = true"
                         @mouseleave="showContactDropdown = false">
                         Contact
                         <div v-if="showContactDropdown" class="dropdown-menu">
@@ -57,20 +54,17 @@
                                 Head Office
                             </router-link>
 
-                            <!-- Submenu -->
-                            <router-link class="dropdown-item dropdownA" @mouseenter="showSubmenu = true"
+                            <div class="dropdown-item dropdownA contact-regional" @mouseenter="showSubmenu = true"
                                 @mouseleave="handleMouseLeave">
                                 Regional Offices
                                 <div v-if="showSubmenu" class="submenu">
-                                    <!-- Iterate over countries -->
                                     <div v-for="(countryOffices, country) in offices.country_offices" :key="country"
                                         class="dropdown-item" @mouseenter="setCurrentCountry(country)"
                                         @mouseleave="clearCurrentCountry">
-                                        <router-link>
+                                        <div class="contact-regional">
                                             {{ country }} Offices
-                                        </router-link>
+                                        </div>
                                         <div v-if="currentCountry === country" class="subsubmenu">
-                                            <!-- Iterate over offices in the country -->
                                            
                                             <router-link v-for="office in countryOffices" :key="office.id"
                                                 class="dropdown-item" :to="`/office/${office.id}`"
@@ -81,15 +75,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            </router-link>
+                            </div>
 
                         </div>
-                    </router-link>
+                    </div>
 
                     <router-link to="/appointment" active-class="active-nav">Appointment</router-link>
                 </div>
 
-                <button @click="navigateLogin()" class="enroll-btn">Login Now</button>
+                <button @click="navigateLogin()" class="enroll-btn">Login/Dashboard</button>
                 <button class="menu-btn" :class="{ menu_button: isScrolled }" @click="toggleSidebar">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -121,37 +115,32 @@
                     <router-link @click="closeSidebar" to="/" exact-active-class="active-nav" exact>Home</router-link>
                     <router-link @click="closeSidebar" to="/course" active-class="active-nav">Courses</router-link>
                     <router-link @click="closeSidebar" to="/choose-country" active-class="active-nav">Choose Country</router-link>
-                    <router-link @click="closeSidebar" to="/applicant" active-class="active-nav">Applicants</router-link>
+                    <router-link @click="closeSidebar" to="/applicant" active-class="active-nav">Insurance</router-link>
                     <router-link @click="closeSidebar" to="/blog" active-class="active-nav">Blog</router-link>
                     <router-link @click="closeSidebar" to="/event" active-class="active-nav">Event</router-link>
                     <router-link @click="closeSidebar" to="/about" active-class="active-nav">About</router-link>
 
-                    <!-- Dropdown Menu -->
-
-
-                    <router-link class="dropdown dropdownA" @mouseenter="showContactDropdown = true"
+                    <div class="dropdown dropdownA contact" @mouseenter="showContactDropdown = true"
                         @mouseleave="showContactDropdown = false">
                         Contact
                         <div v-if="showContactDropdown" class="dropdown-menu">
-                            <router-link class="d-menu" @click="closeSidebar" to="/contact" active-class="active-nav">Contact</router-link>
-                            <router-link class="d-menu" @click="closeSidebar" :to="`/office/${offices.head_office.id}`">
+                            <router-link class="d-menu" to="/contact" active-class="active-nav">Contact</router-link>
+                            <router-link class="d-menu" :to="`/office/${offices.head_office.id}`">
                                 Head Office
                             </router-link>
 
-                            <!-- Submenu -->
-                            <!-- Submenu -->
-                            <router-link class="dropdown-item dropdownA" @mouseenter="showSubmenu = true"
+                            <div class="dropdown-item dropdownA contact-regional" @mouseenter="showSubmenu = true"
                                 @mouseleave="handleMouseLeave">
                                 Regional Offices
                                 <div v-if="showSubmenu" class="submenu">
-                                    <!-- Iterate over countries -->
                                     <div v-for="(countryOffices, country) in offices.country_offices" :key="country"
                                         class="dropdown-item" @mouseenter="setCurrentCountry(country)"
                                         @mouseleave="clearCurrentCountry">
-                                        <router-link>
+                                        <div class="contact-regional">
                                             {{ country }} Offices
-                                        </router-link>
+                                        </div>
                                         <div v-if="currentCountry === country" class="subsubmenu">
+                                           
                                             <router-link v-for="office in countryOffices" :key="office.id"
                                                 class="dropdown-item" :to="`/office/${office.id}`"
                                                 @click.prevent="customLogicBeforeNavigation(office.id)">
@@ -161,19 +150,16 @@
                                         </div>
                                     </div>
                                 </div>
-                            </router-link>
+                            </div>
 
                         </div>
-                    </router-link>
+                    </div>
 
                     <router-link @click="closeSidebar" to="/appointment" active-class="active-nav">Appointment</router-link>
                 </div>
 
                 <button @click="navigateLogin()" class="login_button">Sign In/Dashboard</button>
 
-                <!-- <button @click="navigateRegister()" class="register_button bg-primary">Sign Up</button>
-
-                <button v-if="user" @click="navigateDashboard()" class="register_button bg-primary">DashBoard</button> -->
 
                 <div class="d-flex mt-2">
                     <i class="fas fa-phone mt-1"></i>
@@ -402,7 +388,7 @@ export default {
     background-color: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    padding: 3px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     z-index: 1000;
@@ -421,12 +407,12 @@ export default {
     background-color: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    padding: 3px;
+    padding: 0px;
     display: flex;
     flex-direction: column;
     min-width: 100px;
     margin-left: -15px;
-    margin-top: 3px;
+    margin-top: 0px;
 }
 
 .subsubmenu {
@@ -441,7 +427,7 @@ export default {
     flex-direction: column;
     min-width: 100px;
     margin-left: -65px;
-    margin-top: -3px;
+    margin-top: 0px;
 
 }
 
@@ -485,6 +471,13 @@ export default {
         overflow-y: auto;
     }
     .sidebar a{
+        font-size: 18px;
+        font-weight: bold;
+        margin: 3px;
+        box-shadow: 0px 0px 30px rgba(29, 23, 77, 0.06);
+        padding: 5px;
+    }
+    .sidebar .contact{
         font-size: 18px;
         font-weight: bold;
         margin: 3px;
@@ -664,6 +657,21 @@ export default {
     font-weight: 600;
 }
 
+.nav-links .contact {
+    text-decoration: none;
+    color: rgb(65, 64, 64);
+    font-size: 16px;
+    margin: 5px 20px;
+    font-weight: 600;
+}
+.nav-links .contact-regional {
+    text-decoration: none;
+    color: rgb(65, 64, 64);
+    font-size: 16px;
+    margin: 5px 6px;
+    font-weight: 600;
+}
+
 .color a {
     text-decoration: none;
     color: rgb(65, 64, 64);
@@ -700,7 +708,7 @@ export default {
     background: #f39c12;
     border: none;
     color: white;
-    padding: 13px 40px;
+    padding: 10px 20px;
     cursor: pointer;
     border-radius: 2px;
 }

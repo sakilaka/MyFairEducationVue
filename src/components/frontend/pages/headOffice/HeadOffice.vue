@@ -1,6 +1,6 @@
 <template>
-    <div style="margin-top: 110px;">
-        <div class="">
+    <div style="margin-top: 130px;">
+        <!-- <div class="">
             <div class="inner_section">
                 <div class="containerBlog">
                     <router-link to="/">
@@ -9,7 +9,7 @@
                     <h2 style="color: #012169; margin-top: -10px" class="fw-bold">Office Details</h2>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <h2 style="color: #824fa3;" class="text-center my-5 fw-bold">{{ office.name }}</h2>
 

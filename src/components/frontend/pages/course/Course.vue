@@ -59,7 +59,8 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group">
+
+                    <!-- <div class="form-group">
                         <label for="province">Province</label>
                         <select id="province" v-model="selectedFilters.state">
                             <option value="">Choose One</option>
@@ -76,7 +77,8 @@
                                 {{ city.name }}
                             </option>
                         </select>
-                    </div>
+                    </div> -->
+                    
                 </div>
 
                 <!-- Right Card Section -->

@@ -28,7 +28,7 @@
                     <h2 class="footer-heading">Quick links</h2>
                     <ul class="list-unstyled">
                         <li><router-link to="/blog" class="py-1 d-block">Blog</router-link></li>
-                        <li><router-link to="/about-us" class="py-1 d-block">About us</router-link></li>
+                        <li><router-link to="/about" class="py-1 d-block">About us</router-link></li>
                         <li><router-link to="/contact" class="py-1 d-block">Contact</router-link></li>
                     </ul>
                 </div>
